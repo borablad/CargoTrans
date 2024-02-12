@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CargoTrans.Views.NewDispatchView"
+             xmlns:vm="clr-namespace:CargoTrans.ViewModels"
+              BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.BindingContext>
+        <vm:NewDispatchViewModel/>
+    </ContentPage.BindingContext>
+    <Grid ColumnDefinitions="*,auto" RowDefinitions="60,*" >
+
+        <!-- Кастомный нав бар -->
+        <Border  Grid.ColumnSpan="2" BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
+            <Grid>
+                <Image Source="dotnet_bot.png" HorizontalOptions="Start" VerticalOptions="Start"/>
+
+                <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                    <Border StrokeShape="RoundRectangle 0"  >
+                        <StackLayout Spacing="5" >
+                            <Label Text="Измерение" HorizontalOptions="Center" Margin="10,0"/>
+                            <BoxView HeightRequest="2" IsVisible="False"/>
+                        </StackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenMainPageCommand}"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    <Border StrokeShape="RoundRectangle 0">
+                        <StackLayout Spacing="5" >
+                            <Label Text="Создание отправки" HorizontalOptions="Center" Margin="10,0"/>
+                            <BoxView HeightRequest="2" IsVisible="True" />
+                        </StackLayout>
+                        
+                    </Border>
+                    
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="End" Margin="10,5">
+                    <Label Text="12:40" FontSize="22" HorizontalOptions="End"></Label>
+                    <Label Text="19.02.2024" FontSize="17" HorizontalOptions="End"></Label>
+                </StackLayout>
+            </Grid>
+        </Border>
+        <!-- Кастомный нав бар -->
+
+
+        <!-- Основной контент -->
+        <ScrollView Orientation="Both" Grid.Row="1">
+            <Grid ColumnDefinitions="*,*"  ColumnSpacing="20" Padding="20" >
+                <StackLayout Spacing="15">
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Личные данные клиента" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="ФИО клиента"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="" Placeholder="Введите ФИО клиента" />
+                            </Border>
+
+                            <Label Text="Адрес"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="" Placeholder="Введите адрес клиента" />
+                            </Border>
+
+                            <Label Text="Номер телефона"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="" Placeholder="Введите номер телефона клиента" Keyboard="Numeric" />
+                            </Border>
+                            <Label Text="и/или email"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="" Placeholder="Введите email клиента" />
+                            </Border>
+                        </StackLayout>
+                    </Border>
+
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Билет" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="Номер билета при его наличии"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="" Placeholder="Введите номер билета клиента" />
+                            </Border>
+
+
+                        </StackLayout>
+                    </Border>
+
+                </StackLayout>
+
+                <StackLayout Spacing="15" Grid.Column="1">
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="ВГХ багажа" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Grid ColumnDefinitions="*,*" RowDefinitions="*,auto" Padding="0,10,0,0" >
+                                <StackLayout Spacing="10">
+                                    <Label Text="Высота:"  FontSize="Body" />
+                                    <Label Text="Длина:"  FontSize="Body" />
+                                    <Label Text="Ширина:"  FontSize="Body" />
+                                    <Label Text="Вес:"  FontSize="Body" />
+                                    <Label Text="Код отправки:"  FontSize="Subtitle" />
+                                </StackLayout>
+                                <StackLayout Grid.Column="1" Spacing="10" Margin="30,0">
+                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End" />
+                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="0000"  FontSize="Subtitle" HorizontalOptions="End"/>
+
+                                </StackLayout>
+                               
+                            </Grid>
+                        </StackLayout>
+                    </Border>
+
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Данные по напровлению" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="Станция отправления"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Picker SelectedIndex="0" >
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>Алматы</x:String>
+                                            <x:String>Астана</x:String>
+                                            <x:String>Актобе</x:String>
+                                            <x:String>Екибастуз</x:String>
+                                            <x:String>Семей</x:String>
+                                            <x:String>Чимкент</x:String>
+                                            <x:String>Туркестан</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                            </Border>
+
+                            <Label Text="Станция назначения"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Picker SelectedIndex="1" >
+                                    <Picker.ItemsSource>
+                                        <x:Array Type="{x:Type x:String}">
+                                            <x:String>Алматы</x:String>
+                                            <x:String>Астана</x:String>
+                                            <x:String>Актобе</x:String>
+                                            <x:String>Екибастуз</x:String>
+                                            <x:String>Семей</x:String>
+                                            <x:String>Чимкент</x:String>
+                                            <x:String>Туркестан</x:String>
+                                        </x:Array>
+                                    </Picker.ItemsSource>
+                                </Picker>
+                            </Border>
+                        </StackLayout>
+                    </Border>
+
+                    <Button Text="Отправить" BackgroundColor="{StaticResource GreenButton}" FontSize="Subtitle" VerticalOptions="EndAndExpand" />
+
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+        <!-- Основной контент -->
+
+
+        <!-- Подключение оборудования -->
+        <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2"  MinimumWidthRequest="250" Margin="0,10" BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
+            <Grid RowDefinitions="auto,3,*" >
+
+                <Grid ColumnDefinitions="*,auto" ColumnSpacing="20" Padding="30,20">
+                    <StackLayout VerticalOptions="Center" >
+                        <Label Text="ФИО работника" FontSize="18" HorizontalOptions="End"></Label>
+                        <Label Text="usermail@gmail.com" FontSize="15" HorizontalOptions="End"></Label>
+                    </StackLayout>
+                    <Frame Grid.Column="1" HeightRequest="75" WidthRequest="75"  CornerRadius="37.5" HorizontalOptions="Start" VerticalOptions="Start"/>
+
+                </Grid>
+
+                <BoxView HeightRequest="2" Margin="20,0" Grid.Row="1" Grid.ColumnSpan="2" />
+
+                <StackLayout Grid.Row="2" Padding="20" Spacing="10">
+                    <Grid ColumnDefinitions="*,auto">
+                        <Label Text="Весы: " FontSize="25" VerticalOptions="Center"/>
+                        <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
+                            <Picker >
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Com 1</x:String>
+                                        <x:String>Com 2</x:String>
+                                        <x:String>Com 3</x:String>
+                                        <x:String>Com 4</x:String>
+                                        <x:String>Com 5</x:String>
+                                        <x:String>Com 6</x:String>
+                                        <x:String>Com 7</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,auto">
+                        <Label Text="Сканер: " FontSize="25" VerticalOptions="Center"/>
+                        <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
+                            <Picker >
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Com 1</x:String>
+                                        <x:String>Com 2</x:String>
+                                        <x:String>Com 3</x:String>
+                                        <x:String>Com 4</x:String>
+                                        <x:String>Com 5</x:String>
+                                        <x:String>Com 6</x:String>
+                                        <x:String>Com 7</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </Grid>
+
+                    <Label Text="Wi-fi принтер"  FontSize="Body" Margin="5,5,0,0" />
+                    <Border Padding="0" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" HorizontalOptions="Fill" MaximumHeightRequest="250">
+                        <Entry Text="" Placeholder="Введите ip адрес" >
+
+                        </Entry>
+                    </Border>
+                    <Button Text="Подключиться" BackgroundColor="{StaticResource GreenButton}" Command="{Binding ConetDiviceCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>
+
+                </StackLayout>
+
+            </Grid>
+        </Border>
+        <!-- Подключение оборудования -->
+
+    </Grid>
+
+</ContentPage>

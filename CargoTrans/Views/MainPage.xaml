@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CargoTrans.Views.MainPage"
+             xmlns:vm="clr-namespace:CargoTrans.ViewModels"
+              BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}"
+             Shell.NavBarIsVisible="False">
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel/>
+    </ContentPage.BindingContext>
+    <Grid ColumnDefinitions="*,auto" RowDefinitions="60,*" >
+        
+        <!-- Кастомный нав бар -->
+        <Border  Grid.ColumnSpan="2" BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
+            <Grid>
+                <Image Source="dotnet_bot.png" HorizontalOptions="Start" VerticalOptions="Start"/>
+
+                <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center" Spacing="20">
+                    <Border StrokeShape="RoundRectangle 0">
+                        <StackLayout Spacing="5" >
+                            <Label Text="Измерение" HorizontalOptions="Center" Margin="10,0"/>
+                            <BoxView HeightRequest="2" IsVisible="True"/>
+                        </StackLayout>
+                    </Border>
+                    <Border StrokeShape="RoundRectangle 0">
+                        <StackLayout Spacing="5" >
+                            <Label Text="Создание отправки" HorizontalOptions="Center" Margin="10,0" />
+                            <BoxView HeightRequest="2" IsVisible="False" />
+                        </StackLayout>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding OpenNewDispatchViewCommand}"/>
+                        </Border.GestureRecognizers>
+                    </Border>
+                    
+                </StackLayout>
+                
+                <StackLayout HorizontalOptions="End" Margin="10,5">
+                    <Label Text="12:40" FontSize="22" HorizontalOptions="End"></Label>
+                    <Label Text="19.02.2024" FontSize="17" HorizontalOptions="End"></Label>
+                </StackLayout>
+            </Grid>
+        </Border>
+        <!-- Кастомный нав бар -->
+
+        
+        <!-- Основной контент -->
+        <ScrollView Orientation="Both" Grid.Row="1">
+            <Grid ColumnDefinitions="*,*" RowDefinitions="auto,3, *" ColumnSpacing="20" >
+                <Grid Padding="20,40" HorizontalOptions="Center" >
+                    <Grid HorizontalOptions="Start" VerticalOptions="Center" >
+                        <Border Grid.Column="0" BackgroundColor="CadetBlue" StrokeShape="RoundRectangle 0" HeightRequest="250" VerticalOptions="End" WidthRequest="250"  />
+                        <BoxView WidthRequest="2" HeightRequest="335" HorizontalOptions="Start" VerticalOptions="End" />
+                        <BoxView WidthRequest="2" HeightRequest="335" HorizontalOptions="End"  VerticalOptions="End"/>
+                        <BoxView HeightRequest="1" WidthRequest="241" HorizontalOptions="Center" TranslationY="42"  VerticalOptions="Start"/>
+                        <Label Text="20 см"  FontSize="Subtitle" TranslationY="15" HorizontalOptions="Center" VerticalOptions="Start"/>
+
+                    </Grid>
+                    <BoxView HeightRequest="2" WidthRequest="335" HorizontalOptions="Start" VerticalOptions="Start" TranslationY="83" />
+                    <BoxView HeightRequest="2" WidthRequest="335" HorizontalOptions="Start" VerticalOptions="End" />
+                    <BoxView WidthRequest="1" HeightRequest="241" HorizontalOptions="End" TranslationX="-42"  TranslationY="42" VerticalOptions="Center"/>
+                    <Label Text="20 см"  FontSize="Subtitle" HorizontalOptions="End" HorizontalTextAlignment="End"   TranslationY="42" VerticalOptions="Center"/>
+
+
+                </Grid>
+                <Grid Grid.Column="1" Padding="20,40" HorizontalOptions="Center" VerticalOptions="Center" >
+                    <Border Grid.Column="0" BackgroundColor="CadetBlue" StrokeShape="RoundRectangle 0" HeightRequest="250" VerticalOptions="End" WidthRequest="250" />
+                    <BoxView WidthRequest="2" HeightRequest="335" HorizontalOptions="Start" VerticalOptions="End" />
+                    <BoxView WidthRequest="2" HeightRequest="335" HorizontalOptions="End"  VerticalOptions="End"/>
+                    <BoxView HeightRequest="1" WidthRequest="241" HorizontalOptions="Center" TranslationY="42"  VerticalOptions="Start"/>
+                    <Label Text="20 см"  FontSize="Subtitle" TranslationY="15" HorizontalOptions="Center" VerticalOptions="Start"/>
+
+                </Grid>
+
+                <BoxView HeightRequest="2" Margin="20,0" Grid.Row="1" Grid.ColumnSpan="2" />
+
+                <Grid ColumnDefinitions="*,*"  Grid.ColumnSpan="2" Grid.Row="2"  HorizontalOptions="FillAndExpand" VerticalOptions="End" ColumnSpacing="25" Padding="30,25">
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="*,auto" >
+                        <StackLayout Spacing="20">
+                            <Label Text="Высота:"  FontSize="Subtitle" />
+                            <Label Text="Длина:"  FontSize="Subtitle" />
+                            <Label Text="Ширина:"  FontSize="Subtitle" />
+                            <Label Text="Вес:"  FontSize="Subtitle" />
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Spacing="20" Margin="30,0">
+                            <Label Text="20 см"  FontSize="Subtitle" HorizontalOptions="End" />
+                            <Label Text="20 см"  FontSize="Subtitle" HorizontalOptions="End"/>
+                            <Label Text="20 см"  FontSize="Subtitle" HorizontalOptions="End"/>
+                            <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Subtitle" HorizontalOptions="End"/>
+                        </StackLayout>
+                        <!--<Border Grid.ColumnSpan="2"  Grid.Row="1" Margin="0,20"   >
+                            <Entry Text="" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Placeholder="Введите описание"  ></Entry>
+                        </Border>-->
+                    </Grid>
+                    <StackLayout Grid.Column="1" Spacing="10" >
+                        <Label Text="Занимаемая кубатура: 80 см в кубе"  FontSize="Subtitle"  />
+                        <Label Text="Код отправки нанесённый на богаж"  FontSize="Body" Margin="5,5,0,0" />
+                        <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250">
+                            <Entry Text="" Placeholder="Введите код отправки нанесённый на богаж" Keyboard="Numeric">
+                                
+                            </Entry>
+                        </Border>
+                        <Button Text="Отправить" BackgroundColor="{StaticResource GreenButton}" FontSize="Subtitle"/>
+                    </StackLayout>
+                    
+                </Grid>
+                
+            </Grid>
+        </ScrollView>
+        <!-- Основной контент -->
+
+
+        <!-- Подключение оборудования -->
+        <Border Grid.Column="1" Grid.Row="1" Grid.RowSpan="2"  MinimumWidthRequest="250" Margin="0,10" BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
+            <Grid RowDefinitions="auto,3,*" >
+
+                <Grid ColumnDefinitions="*,auto" ColumnSpacing="20" Padding="30,20">
+                    <StackLayout VerticalOptions="Center" >
+                        <Label Text="ФИО работника" FontSize="18" HorizontalOptions="End"></Label>
+                        <Label Text="usermail@gmail.com" FontSize="15" HorizontalOptions="End"></Label>
+                    </StackLayout>
+                    <Frame Grid.Column="1" HeightRequest="75" WidthRequest="75"  CornerRadius="37.5" HorizontalOptions="Start" VerticalOptions="Start"/>
+
+                </Grid>
+                
+                <BoxView HeightRequest="2" Margin="20,0" Grid.Row="1" Grid.ColumnSpan="2" />
+
+                <StackLayout Grid.Row="2" Padding="20" Spacing="10">
+                    <Grid ColumnDefinitions="*,auto">
+                        <Label Text="Весы: " FontSize="25" VerticalOptions="Center"/>
+                        <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
+                            <Picker >
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Com 1</x:String>
+                                        <x:String>Com 2</x:String>
+                                        <x:String>Com 3</x:String>
+                                        <x:String>Com 4</x:String>
+                                        <x:String>Com 5</x:String>
+                                        <x:String>Com 6</x:String>
+                                        <x:String>Com 7</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </Grid>
+                    <Grid ColumnDefinitions="*,auto">
+                        <Label Text="Сканер: " FontSize="25" VerticalOptions="Center"/>
+                        <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
+                            <Picker >
+                                <Picker.ItemsSource>
+                                    <x:Array Type="{x:Type x:String}">
+                                        <x:String>Com 1</x:String>
+                                        <x:String>Com 2</x:String>
+                                        <x:String>Com 3</x:String>
+                                        <x:String>Com 4</x:String>
+                                        <x:String>Com 5</x:String>
+                                        <x:String>Com 6</x:String>
+                                        <x:String>Com 7</x:String>
+                                    </x:Array>
+                                </Picker.ItemsSource>
+                            </Picker>
+                        </Border>
+                    </Grid>
+
+                    <Label Text="Wi-fi принтер"  FontSize="Body" Margin="5,5,0,0" />
+                    <Border Padding="0" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" HorizontalOptions="Fill" MaximumHeightRequest="250">
+                        <Entry Text="" Placeholder="Введите ip адрес" Keyboard="Numeric">
+
+                        </Entry>
+                    </Border>
+                    <Button Text="Подключиться" BackgroundColor="{StaticResource GreenButton}" Command="{Binding ConetDiviceCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>
+
+                </StackLayout>
+
+            </Grid>
+        </Border>
+        <!-- Подключение оборудования -->
+
+    </Grid>
+</ContentPage>
