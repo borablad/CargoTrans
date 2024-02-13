@@ -225,7 +225,8 @@
 
                         </Entry>
                     </Border>
-                    <Button Text="Подключиться" BackgroundColor="{StaticResource GreenButton}" Command="{Binding ConetDiviceCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>
+                    <!--<Button Text="Подключиться" BackgroundColor="{StaticResource GreenButton}" Command="{Binding ConetDiviceCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>-->
+                    <Button Text="Подключиться123" BackgroundColor="{StaticResource GreenButton}" Command="{Binding GenerateBarcodeCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>
 
                 </StackLayout>
 
