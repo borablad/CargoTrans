@@ -1,9 +1,4 @@
-﻿using CargoTrans.Helpers;
-using Microsoft.Maui.ApplicationModel;
-using System.Drawing;
-using System.Windows.Input;
-using ZXing;
-using ZXing.QrCode;
+﻿using System.Windows.Input;
 
 namespace CargoTrans.ViewModels
 {

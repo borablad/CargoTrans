@@ -11,7 +11,7 @@
     <Grid ColumnDefinitions="*,auto" RowDefinitions="60,*" >
         
         <!-- Кастомный нав бар -->
-        <Border  Grid.ColumnSpan="2" BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
+        <Border  Grid.ColumnSpan="2"  BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
             <Grid>
                 <Image Source="dotnet_bot.png" HorizontalOptions="Start" VerticalOptions="Start"/>
 
