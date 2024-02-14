@@ -1,4 +1,5 @@
 ﻿using CargoTrans.Views;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -10,9 +11,11 @@ namespace CargoTrans.ViewModels
 {
     public partial class LoginViewModel :BaseViewModel
     {
+        [ObservableProperty]
+        private string userLogin, userPassword;
         public LoginViewModel() 
         {
-            Login();
+            //Login();
         }
 
         [RelayCommand]
