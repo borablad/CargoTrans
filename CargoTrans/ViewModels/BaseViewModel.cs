@@ -13,6 +13,20 @@ namespace CargoTrans.ViewModels
 
     public partial class BaseViewModel : ObservableObject
     {
+        [ObservableProperty]
+        private int weight;
+        [ObservableProperty]
+        private int height;
+        [ObservableProperty]
+        private int width;
+        [ObservableProperty]
+        private int length;
+
+        [ObservableProperty] 
+        private List<string> portsnames;
+
+        [ObservableProperty]
+        private string scalesPortName, scannerPortName, printPortName, wifiPrintIpAddres;
 
         [ObservableProperty]
         protected bool isBusy;

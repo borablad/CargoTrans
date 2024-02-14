@@ -13,14 +13,7 @@ namespace CargoTrans.ViewModels
     {
         public ICommand ConetDiviceCommand { get; }
 
-        [ObservableProperty]
-        private int weight;
-        [ObservableProperty]
-        private int height;
-        [ObservableProperty]
-        private int width;
-        [ObservableProperty]
-        private int length;
+       
        
 
         public MainPageViewModel()
