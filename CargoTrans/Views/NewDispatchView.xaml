@@ -119,9 +119,9 @@
                                     <Label Text="Код отправки:"  FontSize="Subtitle" />
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" Spacing="10" Margin="30,0">
-                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End" />
-                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
-                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Height,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End" />
+                                    <Label Text="{Binding Length,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Width,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="00000000"  FontSize="Subtitle" HorizontalOptions="End"/>
 
