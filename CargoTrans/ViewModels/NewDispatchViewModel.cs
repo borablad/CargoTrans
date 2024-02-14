@@ -1,8 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
+using Newtonsoft.Json;
 using System.Drawing;
 using System.Windows.Input;
 using ZXing;
+
 
 namespace CargoTrans.ViewModels
 {
@@ -25,45 +28,34 @@ namespace CargoTrans.ViewModels
         [ObservableProperty]
         private string cargoCode;
 
+        [ObservableProperty]
+        private List<string> pointsList = new List<string>();
 
-        //public string FioTextField
-        //{
-        //    get => fioTextField;
-        //    set => SetProperty(ref fioTextField, value);
-        //}
-
-        //public string AddressTextField
-        //{
-        //    get { return addressTextField; }
-        //    set => SetProperty(ref addressTextField, value);
-        //}
-
-        //public string PhoneNumberTextField
-        //{
-        //    get => phoneNumberTextField;
-        //    set => SetProperty(ref phoneNumberTextField, value);
-        //}
-
-        //public string EmailTextField
-        //{
-        //    get => emailTextField;
-        //    set { SetProperty(ref emailTextField, value);}
-        //}
-
-        //public string TicketNumberTextField
-        //{
-        //    get => ticketNumberTextField;
-        //    set => SetProperty (ref ticketNumberTextField, value);
-        //}
-
-        //public ICommand GenerateBarcodeCommand { get; }
+        [ObservableProperty]
+        private int departurePointId, destinationPointId;
 
         public NewDispatchViewModel()
         {
-            //GenerateBarcodeCommand = new Command(GenerateBarCode);
-            
-            
-           
+            LoadData ();
+            //PointsList.Add("Алматы");
+            //PointsList.Add("Астана");
+            //PointsList.Add("Шымкент");
+            //PointsList.Add("Караганда");
+            //PointsList.Add("Актобе");
+            //PointsList.Add("Тараз");
+            //PointsList.Add("Павлодар");
+            //PointsList.Add("Усть-Каменогорск");
+            //PointsList.Add("Семей");
+            //PointsList.Add("Атырау");
+            //PointsList.Add("Костанай");
+            //PointsList.Add("Кызылорда");
+        }
+
+        
+        public async void LoadData()
+        {
+            PointsList = await FetchPointDataFromApi();
+
         }
 
         [RelayCommand]
@@ -109,7 +101,42 @@ namespace CargoTrans.ViewModels
 
 
 
+        public async Task<List<string>> FetchPointDataFromApi()
+        {
+            string apiUrl = "https://ktzh.shit-systems.dev/api/point/?page=0&size=0";
+            List<string> resultList = new List<string>();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Uri uri = new Uri(apiUrl);
+                    //HttpResponseMessage response = await client.GetAsync(uri);
+                    var response = await client.GetAsync(uri);
+                    //var h = await response.Content.ReadAsStringAsync();
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(json);
+
+                        foreach (var item in data.result)
+                        {
+                            string title = item.title;
+                            resultList.Add(title);
+                        }
+                    }
+                    else
+                    {
+                        await AppShell.Current.DisplayAlert("","Failed to fetch data from the API. Status code: " + response.StatusCode ,"ok");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
+            }
+            return resultList;
+        }
 
 
 
