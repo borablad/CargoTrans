@@ -123,7 +123,7 @@
                                     <Label Text="{Binding Length,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding Width,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Body" HorizontalOptions="End"/>
-                                    <Label Text="00000000"  FontSize="Subtitle" HorizontalOptions="End"/>
+                                    <Label Text="{Binding CargoCode}"  FontSize="Subtitle" HorizontalOptions="End"/>
 
                                 </StackLayout>
                                

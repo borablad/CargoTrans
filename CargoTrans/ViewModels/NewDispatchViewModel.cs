@@ -22,6 +22,8 @@ namespace CargoTrans.ViewModels
         private string ticketNumberTextField;
         [ObservableProperty]
         private string description;
+        [ObservableProperty]
+        private string cargoCode;
 
 
         //public string FioTextField
