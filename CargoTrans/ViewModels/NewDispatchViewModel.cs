@@ -1,4 +1,6 @@
-﻿using System.Drawing;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using System.Drawing;
 using System.Windows.Input;
 using ZXing;
 
@@ -8,53 +10,59 @@ namespace CargoTrans.ViewModels
     {
         private readonly WifiPrinterHelper wifiPrinterHelper = new ();
         //TextFields
+        [ObservableProperty]
         private string fioTextField;
+        [ObservableProperty]
         private string addressTextField;
+        [ObservableProperty]
         private string phoneNumberTextField;
+        [ObservableProperty]
         private string emailTextField;
+        [ObservableProperty]
         private string ticketNumberTextField;
 
 
-        public string FioTextField
-        {
-            get => fioTextField;
-            set => SetProperty(ref fioTextField, value);
-        }
+        //public string FioTextField
+        //{
+        //    get => fioTextField;
+        //    set => SetProperty(ref fioTextField, value);
+        //}
 
-        public string AddressTextField
-        {
-            get { return addressTextField; }
-            set => SetProperty(ref addressTextField, value);
-        }
+        //public string AddressTextField
+        //{
+        //    get { return addressTextField; }
+        //    set => SetProperty(ref addressTextField, value);
+        //}
 
-        public string PhoneNumberTextField
-        {
-            get => phoneNumberTextField;
-            set => SetProperty(ref phoneNumberTextField, value);
-        }
+        //public string PhoneNumberTextField
+        //{
+        //    get => phoneNumberTextField;
+        //    set => SetProperty(ref phoneNumberTextField, value);
+        //}
 
-        public string EmailTextField
-        {
-            get => emailTextField;
-            set { SetProperty(ref emailTextField, value);}
-        }
+        //public string EmailTextField
+        //{
+        //    get => emailTextField;
+        //    set { SetProperty(ref emailTextField, value);}
+        //}
 
-        public string TicketNumberTextField
-        {
-            get => ticketNumberTextField;
-            set => SetProperty (ref ticketNumberTextField, value);
-        }
+        //public string TicketNumberTextField
+        //{
+        //    get => ticketNumberTextField;
+        //    set => SetProperty (ref ticketNumberTextField, value);
+        //}
 
-        public ICommand GenerateBarcodeCommand { get; }
+        //public ICommand GenerateBarcodeCommand { get; }
 
         public NewDispatchViewModel()
         {
-            GenerateBarcodeCommand = new Command(GenerateBarCode);
+            //GenerateBarcodeCommand = new Command(GenerateBarCode);
             
             
            
         }
 
+        [RelayCommand]
         private void GenerateBarCode()
         {
             try
