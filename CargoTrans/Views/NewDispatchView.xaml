@@ -55,21 +55,21 @@
                             </Border>
                             <Label Text="ФИО клиента"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="" Placeholder="Введите ФИО клиента" />
+                                <Entry Text="{Binding FioTextField}" Placeholder="Введите ФИО клиента" />
                             </Border>
 
                             <Label Text="Адрес"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="" Placeholder="Введите адрес клиента" />
+                                <Entry Text="{Binding AddressTextField}" Placeholder="Введите адрес клиента" />
                             </Border>
 
                             <Label Text="Номер телефона"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="" Placeholder="Введите номер телефона клиента" Keyboard="Numeric" />
+                                <Entry Text="{Binding PhoneNumberTextField}" Placeholder="Введите номер телефона клиента" Keyboard="Numeric" />
                             </Border>
                             <Label Text="и/или email"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="" Placeholder="Введите email клиента" />
+                                <Entry Text="{Binding EmailTextField}" Placeholder="Введите email клиента" />
                             </Border>
                         </StackLayout>
                     </Border>
@@ -81,7 +81,21 @@
                             </Border>
                             <Label Text="Номер билета при его наличии"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="" Placeholder="Введите номер билета клиента" />
+                                <Entry Text="{Binding TicketNumberTextField}" Placeholder="Введите номер билета клиента" />
+                            </Border>
+
+
+                        </StackLayout>
+                    </Border>
+
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Описание" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="Добавте описание багажа"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="{Binding Description}" Placeholder="Введите описание багажа клиента" />
                             </Border>
 
 
@@ -109,7 +123,7 @@
                                     <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Body" HorizontalOptions="End"/>
-                                    <Label Text="0000"  FontSize="Subtitle" HorizontalOptions="End"/>
+                                    <Label Text="00000000"  FontSize="Subtitle" HorizontalOptions="End"/>
 
                                 </StackLayout>
                                

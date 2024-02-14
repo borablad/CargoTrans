@@ -20,6 +20,8 @@ namespace CargoTrans.ViewModels
         private string emailTextField;
         [ObservableProperty]
         private string ticketNumberTextField;
+        [ObservableProperty]
+        private string description;
 
 
         //public string FioTextField
