@@ -1,4 +1,6 @@
-﻿using System.Windows.Input;
+﻿using System.Drawing;
+using System.Windows.Input;
+using ZXing;
 
 namespace CargoTrans.ViewModels
 {
