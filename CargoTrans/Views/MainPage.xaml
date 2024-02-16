@@ -67,7 +67,7 @@
                     <BoxView WidthRequest="2" HeightRequest="335" HorizontalOptions="Start" VerticalOptions="End" />
                     <BoxView WidthRequest="2" HeightRequest="335" HorizontalOptions="End"  VerticalOptions="End"/>
                     <BoxView HeightRequest="1" WidthRequest="241" HorizontalOptions="Center" TranslationY="42"  VerticalOptions="Start"/>
-                    <Label Text="{Binding Weight,StringFormat='{0:N0} см'}" FontSize="Subtitle" TranslationY="15" HorizontalOptions="Center" VerticalOptions="Start"/>
+                    <Label Text="{Binding Width,StringFormat='{0:N0} см'}" FontSize="Subtitle" TranslationY="15" HorizontalOptions="Center" VerticalOptions="Start"/>
 
                 </Grid>
 
@@ -128,36 +128,16 @@
                     <Grid ColumnDefinitions="*,auto">
                         <Label Text="Весы: " FontSize="25" VerticalOptions="Center"/>
                         <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
-                            <Picker >
-                                <Picker.ItemsSource>
-                                    <x:Array Type="{x:Type x:String}">
-                                        <x:String>Com 1</x:String>
-                                        <x:String>Com 2</x:String>
-                                        <x:String>Com 3</x:String>
-                                        <x:String>Com 4</x:String>
-                                        <x:String>Com 5</x:String>
-                                        <x:String>Com 6</x:String>
-                                        <x:String>Com 7</x:String>
-                                    </x:Array>
-                                </Picker.ItemsSource>
+                            <Picker SelectedIndex="{Binding ScalesPortName}" ItemsSource="{Binding Portsnames}" >
+                                
                             </Picker>
                         </Border>
                     </Grid>
                     <Grid ColumnDefinitions="*,auto">
                         <Label Text="Сканер: " FontSize="25" VerticalOptions="Center"/>
                         <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
-                            <Picker >
-                                <Picker.ItemsSource>
-                                    <x:Array Type="{x:Type x:String}">
-                                        <x:String>Com 1</x:String>
-                                        <x:String>Com 2</x:String>
-                                        <x:String>Com 3</x:String>
-                                        <x:String>Com 4</x:String>
-                                        <x:String>Com 5</x:String>
-                                        <x:String>Com 6</x:String>
-                                        <x:String>Com 7</x:String>
-                                    </x:Array>
-                                </Picker.ItemsSource>
+                            <Picker SelectedIndex="{Binding ScannerPortName}" ItemsSource="{Binding Portsnames}" >
+
                             </Picker>
                         </Border>
                     </Grid>

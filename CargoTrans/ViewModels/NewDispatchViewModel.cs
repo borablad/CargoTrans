@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 
 using Newtonsoft.Json;
 using System.Drawing;
+using System.IO.Ports;
 using System.Windows.Input;
 using ZXing;
 
@@ -55,6 +56,7 @@ namespace CargoTrans.ViewModels
         public async void LoadData()
         {
             PointsList = await FetchPointDataFromApi();
+            Portsnames = SerialPort.GetPortNames();
 
         }
 
