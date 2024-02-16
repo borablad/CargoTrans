@@ -128,7 +128,7 @@
                     <Grid ColumnDefinitions="*,auto">
                         <Label Text="Весы: " FontSize="25" VerticalOptions="Center"/>
                         <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
-                            <Picker SelectedIndex="{Binding ScalesPortName}" ItemsSource="{Binding Portsnames}" >
+                            <Picker SelectedIndex="{Binding ScalesPortName}" Title="{Binding ScalesPortName}" ItemsSource="{Binding Portsnames}" >
                                 
                             </Picker>
                         </Border>
@@ -136,7 +136,7 @@
                     <Grid ColumnDefinitions="*,auto">
                         <Label Text="Сканер: " FontSize="25" VerticalOptions="Center"/>
                         <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
-                            <Picker SelectedIndex="{Binding ScannerPortName}" ItemsSource="{Binding Portsnames}" >
+                            <Picker SelectedIndex="{Binding ScannerPortName}" Title="{Binding ScannerPortName}" ItemsSource="{Binding Portsnames}" >
 
                             </Picker>
                         </Border>

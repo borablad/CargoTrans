@@ -29,7 +29,7 @@ namespace CargoTrans.ViewModels
         private string[] portsnames;
 
         [ObservableProperty]
-        private int scalesPortName, scannerPortName, printPortName, wifiPrintIpAddres;
+        private int scalesPortName = -5, scannerPortName = -5, printPortName, wifiPrintIpAddres = -5;
 
         [ObservableProperty]
         protected bool isBusy;
@@ -40,6 +40,8 @@ namespace CargoTrans.ViewModels
         private string title;
 
         protected Action currentDismissAction;
+
+
 
 
         // Навигация по основным вкладкам
@@ -58,57 +60,48 @@ namespace CargoTrans.ViewModels
         public void ConetDivice()
         {
             if(IsNotNull(_USserialPort) && _USserialPort.IsOpen)
-            {
                 _USserialPort.Close();
-            }
+            
 
-            Portsnames = SerialPort.GetPortNames();
-
-            _USserialPort = new SerialPort(Portsnames[scannerPortName+1], 9600); // Укажите нужный COM порт и скорость передачи данных
-            //_USserialPort.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
-            _USserialPort.DataReceived += DataReceivedHandler;
-
-            try
+            if (ScannerPortName!=-5) // Если кто то это увидет простите сейчас важна скорость дедлаин сгорел вчера
             {
-                _USserialPort.Open();
-                
+
+                _USserialPort = new SerialPort(Portsnames[ScannerPortName], 9600); // Укажите нужный COM порт и скорость передачи данных
+                _USserialPort.DataReceived += DataReceivedHandler;
+                try { _USserialPort.Open(); }
+                catch (Exception ex) { AppShell.Current.DisplayAlert("", ex.Message, "ok"); }
             }
-            catch (Exception ex)
+            else
             {
-                 AppShell.Current.DisplayAlert("", ex.Message,"ok");
+                AppShell.Current.DisplayAlert("Внимание","Не был выбран порт сканера","ok");
+            }
+            if (IsNotNull(_MassserialPort) && _MassserialPort.IsOpen)
+                _USserialPort.Close();
+            
+            if (IsNotNull( ScalesPortName))
+            {    
+                // Подключаемся к COM порту
+                _MassserialPort = new SerialPort(Portsnames[ScalesPortName], 4800);
+
+                // Устанавливаем параметры порта
+                _MassserialPort.DataBits = 8;
+                _MassserialPort.Parity = Parity.Space;
+                _MassserialPort.StopBits = StopBits.One;
+
+                // Обработчик события при появлении новых данных в порте
+                _MassserialPort.DataReceived += SerialPort_DataReceived;
+
+                // Открываем порт
+                try {  _MassserialPort.Open(); }
+                catch (Exception ex) { return; }
+            }
+            else
+            {
+                AppShell.Current.DisplayAlert("Внимание","Не был выбран порт весов","ok");
             }
 
-            //// Укажите COM-порт, который вы хотите прослушивать
-            //string portName = ports[0];
 
-            //// Подключаемся к COM порту
-            //_MassserialPort = new SerialPort(portName, 4800);
 
-            //// Устанавливаем параметры порта
-            //_MassserialPort.DataBits = 8;
-            //_MassserialPort.Parity = Parity.Space;
-            //_MassserialPort.StopBits = StopBits.One;
-
-            //// Обработчик события при появлении новых данных в порте
-            //_MassserialPort.DataReceived += SerialPort_DataReceived;
-
-            //// Открываем порт
-            //try
-            //{
-            //    _MassserialPort.Open();
-            //    Console.WriteLine("Порт открыт. Ожидание данных...");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine("Ошибка открытия порта: " + ex.Message);
-            //    return;
-            //}
-
-            //// Ожидание завершения работы программы
-            //Console.ReadLine();
-
-            //// Закрываем порт
-            ////serialPort.Close();
         }
 
         private  void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
@@ -124,13 +117,14 @@ namespace CargoTrans.ViewModels
                 // Взятие последних 4 значений
                 string[] lastFourLines = lines.Skip(lines.Length - 4).ToArray();
 
-
+                try
+                {
                     Width = Convert.ToInt32(lastFourLines[0].Substring(0, lastFourLines[0].Length - 3));
                     Length = Convert.ToInt32(lastFourLines[1].Substring(0, lastFourLines[1].Length - 3));
                     Height = Convert.ToInt32(lastFourLines[2].Substring(0, lastFourLines[2].Length - 3));
-
-                    // Здесь можно выполнить дополнительные действия с полученными значениями
-                    //Console.WriteLine($"First value: {firstValue}, Second value: {secondValue}, Third value: {thirdValue}");
+                }
+                catch(Exception ex) { Console.WriteLine(ex.Message); }
+                    
             }
             else
             {
@@ -156,13 +150,9 @@ namespace CargoTrans.ViewModels
                 }
 
                 //Console.WriteLine($"Получен вес: {wght} г");
-                Weight = wght;
+                 Weight = wght;
             }
-            else
-            {
-                AppShell.Current.DisplayAlert("Error", "Ошибка: Неверный формат данных.", "ok");
-                Console.WriteLine("Ошибка: Неверный формат данных.");
-            }
+            else { AppShell.Current.DisplayAlert("Error", "Ошибка: Неверный формат данных.", "ok"); }
         }
     }
 }
