@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace CargoTrans.Helpers
 {
-    internal interface IWifiPrinterHelper
+    internal interface IUsbPrinterHelper
     {
-          bool ConnectToWifiPrinter(string ipAddress);
-        bool PrintImageToWifiPrinter(string ipAddress, Bitmap image);
+        void PrintImage(Bitmap Image);
     }
 }

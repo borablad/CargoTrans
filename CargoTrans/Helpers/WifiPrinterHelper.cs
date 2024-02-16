@@ -3,6 +3,7 @@ using Microsoft.Maui.ApplicationModel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -32,6 +33,41 @@ public  class WifiPrinterHelper : IWifiPrinterHelper
         {
             Console.WriteLine($"Ошибка подключения к принтеру: {ex.Message}");
             return false;
+        }
+    }
+
+
+    public void PrintTextToWoifiPrinter(string ipAddress, List<string> text)
+    {
+        TcpClient client = null;
+        try
+        {
+            client = new TcpClient(ipAddress, 9100);
+            using (var stream = client.GetStream())
+            {
+                foreach (var item in text)
+                {
+                    byte[] data = Encoding.UTF8.GetBytes(item + "\n");
+                    stream.Write(data, 0, data.Length);
+                    for(int i = 0; i < 10; i++)
+                    {
+                        stream.WriteByte((byte)'='); // Записываем один байт '='
+                        
+                    }
+                    
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Ошибка: {ex.Message}");
+        }
+        finally
+        {
+            if (client != null)
+            {
+                client.Close();
+            }
         }
     }
 
