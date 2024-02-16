@@ -88,6 +88,20 @@
                         </StackLayout>
                     </Border>
 
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Описание" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="Добавте описание багажа"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="{Binding Description}" Placeholder="Введите описание багажа клиента" />
+                            </Border>
+
+
+                        </StackLayout>
+                    </Border>
+
                 </StackLayout>
 
                 <StackLayout Spacing="15" Grid.Column="1">
@@ -105,11 +119,11 @@
                                     <Label Text="Код отправки:"  FontSize="Subtitle" />
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" Spacing="10" Margin="30,0">
-                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End" />
-                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
-                                    <Label Text="20 см"  FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Height,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End" />
+                                    <Label Text="{Binding Length,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Width,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Body" HorizontalOptions="End"/>
-                                    <Label Text="0000"  FontSize="Subtitle" HorizontalOptions="End"/>
+                                    <Label Text="{Binding CargoCode}"  FontSize="Subtitle" HorizontalOptions="End"/>
 
                                 </StackLayout>
                                
@@ -124,35 +138,15 @@
                             </Border>
                             <Label Text="Станция отправления"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Picker SelectedIndex="0" >
-                                    <Picker.ItemsSource>
-                                        <x:Array Type="{x:Type x:String}">
-                                            <x:String>Алматы</x:String>
-                                            <x:String>Астана</x:String>
-                                            <x:String>Актобе</x:String>
-                                            <x:String>Екибастуз</x:String>
-                                            <x:String>Семей</x:String>
-                                            <x:String>Чимкент</x:String>
-                                            <x:String>Туркестан</x:String>
-                                        </x:Array>
-                                    </Picker.ItemsSource>
+                                <Picker SelectedIndex="{Binding DeparturePointId}" ItemsSource="{Binding PointsList}" >
+                                    
                                 </Picker>
                             </Border>
 
                             <Label Text="Станция назначения"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Picker SelectedIndex="1" >
-                                    <Picker.ItemsSource>
-                                        <x:Array Type="{x:Type x:String}">
-                                            <x:String>Алматы</x:String>
-                                            <x:String>Астана</x:String>
-                                            <x:String>Актобе</x:String>
-                                            <x:String>Екибастуз</x:String>
-                                            <x:String>Семей</x:String>
-                                            <x:String>Чимкент</x:String>
-                                            <x:String>Туркестан</x:String>
-                                        </x:Array>
-                                    </Picker.ItemsSource>
+                                <Picker SelectedIndex="{Binding DestinationPointId}" ItemsSource="{Binding PointsList}" >
+                                    
                                 </Picker>
                             </Border>
                         </StackLayout>

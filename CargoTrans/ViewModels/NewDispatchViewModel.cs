@@ -1,13 +1,10 @@
 ﻿using CargoTrans.Helpers;
-using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Platform;
 using System.Drawing;
 using System.IO.Ports;
-using System.Text;
 using System.Windows.Input;
 using ZXing;
-using ZXing.QrCode;
+
 
 namespace CargoTrans.ViewModels
 {
@@ -18,67 +15,57 @@ namespace CargoTrans.ViewModels
         //TextFields
         [ObservableProperty]
         private string fioTextField;
-
-        [ObservableProperty]
         private string addressTextField;
-
-        [ObservableProperty]
         private string phoneNumberTextField;
-
-        [ObservableProperty]
         private string emailTextField;
-
-        [ObservableProperty]
         private string ticketNumberTextField;
+        [ObservableProperty]
+        private string description;
+        [ObservableProperty]
+        private string cargoCode;
 
-        private List<string> data = new List<string> ();
 
-
-        
-        public NewDispatchViewModel()
+        public string FioTextField
         {
-            GenerateBarcodeCommand = new Command(GenerateBarCode);
-            GetTextCommand = new Command(GetText);
-            usbPrinter = new UsbPrinterHelper ();
-
-            
+            get => fioTextField;
+            set => SetProperty(ref fioTextField, value);
         }
 
-        private void addList()
+        public string AddressTextField
         {
-            data.Add(FioTextField);
-            data.Add(AddressTextField);
-            data.Add(PhoneNumberTextField);
-            data.Add(EmailTextField);
-            data.Add(TicketNumberTextField);
+            get { return addressTextField; }
+            set => SetProperty(ref addressTextField, value);
+        }
+
+        public string PhoneNumberTextField
+        {
+            get => phoneNumberTextField;
+            set => SetProperty(ref phoneNumberTextField, value);
+        }
+
+        public string EmailTextField
+        {
+            get => emailTextField;
+            set { SetProperty(ref emailTextField, value);}
+        }
+
+        public string TicketNumberTextField
+        {
+            get => ticketNumberTextField;
+            set => SetProperty (ref ticketNumberTextField, value);
         }
 
         public ICommand GenerateBarcodeCommand { get; }
-        private void GenerateBarCode()
+
+        public NewDispatchViewModel()
         {
-            try
-            {
-                wifiPrinterHelper.ConnectToWifiPrinter("192.168.31.98");
-
-                addList();
-
-                if (data != null)
-                {
-                    wifiPrinterHelper.PrintTextToWoifiPrinter("192.168.31.98", data);
-                }
-
-               /* string barcodeData = string.Join("\n", data);
-                Bitmap barcodeBitmap = GenerateBarcodeImage(barcodeData);
-
-                wifiPrinterHelper.PrintImageToWifiPrinter("192.168.31.98", barcodeBitmap);*/
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Что-то пошло не так! {ex.ToString()}");
-            }
+            GenerateBarcodeCommand = new Command(GenerateBarCode);
+            
+            
+           
         }
 
-        private Bitmap GenerateBarcodeImage(string barcodeData)
+        private void GenerateBarCode()
         {
             try
 
@@ -124,9 +111,31 @@ namespace CargoTrans.ViewModels
             }
         }
 
-        
 
 
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(json);
+
+                        foreach (var item in data.result)
+                        {
+                            string title = item.title;
+                            resultList.Add(title);
+                        }
+                    }
+                    else
+                    {
+                        await AppShell.Current.DisplayAlert("","Failed to fetch data from the API. Status code: " + response.StatusCode ,"ok");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
+            }
+            return resultList;
+        }
 
 
 

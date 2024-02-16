@@ -3,14 +3,30 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CargoTrans.Views.LoginView"
              xmlns:vm="clr-namespace:CargoTrans.ViewModels"
+             BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}"
+             Shell.NavBarIsVisible="False"
              Title="LoginView">
     <ContentPage.BindingContext>
         <vm:LoginViewModel/>
     </ContentPage.BindingContext>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to CargoTrans"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+    <VerticalStackLayout VerticalOptions="CenterAndExpand">
+        <Border  HorizontalOptions="CenterAndExpand" WidthRequest="350">
+            <StackLayout Padding="10">
+                <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                    <Label Text="Авторизация " TextColor="{StaticResource Primary}" />
+                </Border>
+                <Label Text="Логин"  FontSize="Body" Margin="5,5,0,0" />
+                <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                    <Entry Text="{Binding UserLogin}" Placeholder="Введите логин" />
+                </Border>
+
+                <Label Text="Пароль"  FontSize="Body" Margin="5,5,0,0" />
+                <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                    <Entry Text="{Binding UserPassword}" Placeholder="Введите пароль" IsPassword="True"/>
+                </Border>
+                <Button Text="Войти" Command="{Binding LoginCommand}" Margin="0,25,0,0" BackgroundColor="{StaticResource Primary}"/>
+            </StackLayout>
+        </Border>
+        <!---->
     </VerticalStackLayout>
 </ContentPage>
