@@ -119,9 +119,9 @@
                                     <Label Text="Код отправки:"  FontSize="Subtitle" />
                                 </StackLayout>
                                 <StackLayout Grid.Column="1" Spacing="10" Margin="30,0">
-                                    <Label Text="{Binding Height,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End" />
-                                    <Label Text="{Binding Length,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
-                                    <Label Text="{Binding Width,StringFormat='{0:N} г'}" FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Height,StringFormat='{0:N} см'}" FontSize="Body" HorizontalOptions="End" />
+                                    <Label Text="{Binding Length,StringFormat='{0:N} см'}" FontSize="Body" HorizontalOptions="End"/>
+                                    <Label Text="{Binding Width,StringFormat='{0:N} см'}" FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding Weight,StringFormat='{0:N} г'}"  FontSize="Body" HorizontalOptions="End"/>
                                     <Label Text="{Binding CargoCode}"  FontSize="Subtitle" HorizontalOptions="End"/>
 
@@ -152,7 +152,7 @@
                         </StackLayout>
                     </Border>
 
-                    <Button Text="Отправить" BackgroundColor="{StaticResource GreenButton}" FontSize="Subtitle" VerticalOptions="EndAndExpand" />
+                    <Button Text="Отправить" BackgroundColor="{StaticResource GreenButton}" FontSize="Subtitle" VerticalOptions="EndAndExpand" Command="{Binding SendCommand}" />
 
                 </StackLayout>
             </Grid>
