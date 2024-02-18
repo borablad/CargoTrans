@@ -35,10 +35,10 @@
                     
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="End" Margin="10,5">
+                <!--<StackLayout HorizontalOptions="End" Margin="10,5">
                     <Label Text="12:40" FontSize="22" HorizontalOptions="End"></Label>
                     <Label Text="19.02.2024" FontSize="17" HorizontalOptions="End"></Label>
-                </StackLayout>
+                </StackLayout>-->
             </Grid>
         </Border>
         <!-- Кастомный нав бар -->

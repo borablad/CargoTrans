@@ -1,13 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Exception = System.Exception;
+
 
 
 namespace CargoTrans.ViewModels
@@ -111,7 +108,8 @@ namespace CargoTrans.ViewModels
                     // Использование значений barcode и mark
                     string barcodeValue = item_data.Barcode;
                     string markValue = item_data.Mark;
-
+                    string entity_id = item_data.Entity_id;
+                    AppShell.Current.DisplayAlert("Отправка отправлена на кассу", $"Отнесите посылку на склад: {GetStockName(entity_id)} \r\n Barcode: {barcodeValue}", "готово");
 
                     // Обработка полученных данных, если необходимо
                     return;
@@ -132,12 +130,13 @@ namespace CargoTrans.ViewModels
         }
 
 
-
+        
 
     }
     public class DataModel
     {
         public string Barcode { get; set; }
         public string Mark { get; set; }
+        public string Entity_id { get; set; }
     }
 }

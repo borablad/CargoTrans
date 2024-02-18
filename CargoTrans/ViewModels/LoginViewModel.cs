@@ -17,9 +17,6 @@ namespace CargoTrans.ViewModels
         public LoginViewModel() 
         {
             //Login();
-            //Helpers.IWifiPrinterHelper wifiPrinterHelper = new WifiPrinterHelper();
-            //wifiPrinterHelper.ConnectToWifiPrinter("192.168.31.98");
-            Print_Barcode("Tercn \n Tercn \n Tercn \n Tercn \n");
 
         }
 

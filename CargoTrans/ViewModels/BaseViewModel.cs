@@ -2,6 +2,7 @@
 using CargoTrans.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO.Ports;
@@ -156,6 +157,45 @@ namespace CargoTrans.ViewModels
             else { AppShell.Current.DisplayAlert("Error", "Ошибка: Неверный формат данных.", "ok"); }
         }
 
+        [RelayCommand]
+        public void GetPorts()
+        {
+            Portsnames = SerialPort.GetPortNames();
+        }
+
+        public async Task<string> GetStockName(string stockId)
+        {
+            string result = "";
+            string apiUrl = $"https://ktzh.shit-systems.dev/api/stock/{stockId}";
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Uri uri = new Uri(apiUrl);
+                    //HttpResponseMessage response = await client.GetAsync(uri);
+                    var response = await client.GetAsync(uri);
+                    //var h = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(json);
+                        //result = data.;
+                        
+                    }
+                    else
+                    {
+                        await AppShell.Current.DisplayAlert("", "Failed to fetch data from the API. Status code: " + response.StatusCode, "ok");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
+            }
+            return result;
+        }
+
 
         public void Print_Barcode(string plain_text)
         {
@@ -174,18 +214,21 @@ namespace CargoTrans.ViewModels
                     using (var stream = client.GetStream())
                     {
                         byte[] data = Encoding.UTF8.GetBytes(plain_text);
-                        stream.Write(data, 0, data.Length);
+                          byte[] postData = System.Text.Encoding.GetEncoding(866).GetBytes(plain_text);
+
+                        stream.Write(postData);
+                        //stream.Write(data, 0, data.Length);
 
                         // stream.Write(postData);
                     }
                 }
             }
-            catch (Exception ex)
+              catch (Exception ex)
             {
                 //DialogService.ShowToast(ex.Message);
 
                 // Handle connection or printing error
-                //  Console.WriteLine($"Error printing directly to printer: {ex.Message}");
+                  Console.WriteLine($"Error printing directly to printer: {ex.Message}");
             }
 
         }
@@ -193,9 +236,11 @@ namespace CargoTrans.ViewModels
         public static void PrintText(string plain_text)
         {
         }
-        public void Generate_barcode(string _code)
+        public string Generate_barcode(string _code)
         {
+            return "";
 
         }
+
     }
 }

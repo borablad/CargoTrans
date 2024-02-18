@@ -42,6 +42,8 @@ namespace CargoTrans.ViewModels
 
         [ObservableProperty]
         private List<string> pointsList = new List<string>();
+        [ObservableProperty]
+        private List<string> pointsIdList = new List<string>();
 
         [ObservableProperty]
         private int departurePointId, destinationPointId;
@@ -106,7 +108,9 @@ namespace CargoTrans.ViewModels
                         foreach (var item in data.result)
                         {
                             string title = item.title;
+                            string ID = item.ID;
                             resultList.Add(title);
+                            PointsIdList.Add(ID);
                         }
                     }
                     else
@@ -210,8 +214,8 @@ namespace CargoTrans.ViewModels
 
                     },
                     code = CargoCode,
-                    point_to_id = "ed4e169e-1e23-41cf-88fe-07492f0bae93",
-                    point_from_id = "0c0bfc52-3a1f-428c-99a0-7001ed34503b",
+                    point_to_id = PointsIdList[DeparturePointId],
+                    point_from_id = PointsIdList[DestinationPointId],
                     recipient = new
                     {
                         first_name = Recepfirst_name,
@@ -244,7 +248,7 @@ namespace CargoTrans.ViewModels
                 var response = await _httpClient.PostAsync($"keeper/application/", data);
                 //var responseData = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode)
+                ssssssssssssssssssssssssssssssif (response.IsSuccessStatusCode)
                 {
 
                     var responseData = await response.Content.ReadAsStringAsync();
@@ -254,7 +258,8 @@ namespace CargoTrans.ViewModels
                     // Использование значений barcode и mark
                     string barcodeValue = item_data.Barcode;
                     string markValue = item_data.Mark;
-                    //Print_Barcode();
+                    string entity_id = item_data.Entity_id;
+                    AppShell.Current.DisplayAlert("Отправка отправлена на кассу", $"Отнесите посылку на склад: {GetStockName(entity_id)} \r\n Barcode: {barcodeValue}", "готово");
 
                     // Обработка полученных данных, если необходимо
                     return;
@@ -274,5 +279,11 @@ namespace CargoTrans.ViewModels
 
         }
 
+
+
+
     }
+
+
+
 }
