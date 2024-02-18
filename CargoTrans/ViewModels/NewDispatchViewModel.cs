@@ -248,7 +248,7 @@ namespace CargoTrans.ViewModels
                 var response = await _httpClient.PostAsync($"keeper/application/", data);
                 //var responseData = await response.Content.ReadAsStringAsync();
 
-                ssssssssssssssssssssssssssssssif (response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
 
                     var responseData = await response.Content.ReadAsStringAsync();
