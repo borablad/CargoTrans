@@ -179,55 +179,33 @@
                     <Grid ColumnDefinitions="*,auto">
                         <Label Text="Весы: " FontSize="25" VerticalOptions="Center"/>
                         <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
-                            <Picker >
-                                <Picker.ItemsSource>
-                                    <x:Array Type="{x:Type x:String}">
-                                        <x:String>Com 1</x:String>
-                                        <x:String>Com 2</x:String>
-                                        <x:String>Com 3</x:String>
-                                        <x:String>Com 4</x:String>
-                                        <x:String>Com 5</x:String>
-                                        <x:String>Com 6</x:String>
-                                        <x:String>Com 7</x:String>
-                                    </x:Array>
-                                </Picker.ItemsSource>
+                            <Picker SelectedIndex="{Binding ScalesPortName}" ItemsSource="{Binding Portsnames}" >
+
                             </Picker>
                         </Border>
                     </Grid>
                     <Grid ColumnDefinitions="*,auto">
                         <Label Text="Сканер: " FontSize="25" VerticalOptions="Center"/>
                         <Border Grid.Column="1" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" Padding="5" >
-                            <Picker >
-                                <Picker.ItemsSource>
-                                    <x:Array Type="{x:Type x:String}">
-                                        <x:String>Com 1</x:String>
-                                        <x:String>Com 2</x:String>
-                                        <x:String>Com 3</x:String>
-                                        <x:String>Com 4</x:String>
-                                        <x:String>Com 5</x:String>
-                                        <x:String>Com 6</x:String>
-                                        <x:String>Com 7</x:String>
-                                    </x:Array>
-                                </Picker.ItemsSource>
+                            <Picker SelectedIndex="{Binding ScannerPortName}" ItemsSource="{Binding Portsnames}" >
+
                             </Picker>
                         </Border>
                     </Grid>
 
                     <Label Text="Wi-fi принтер"  FontSize="Body" Margin="5,5,0,0" />
                     <Border Padding="0" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" HorizontalOptions="Fill" MaximumHeightRequest="250">
-                        <Entry Text="" Placeholder="Введите ip адрес" >
+                        <Entry Text="" Placeholder="Введите ip адрес" Keyboard="Numeric">
 
                         </Entry>
                     </Border>
-                    <!--<Button Text="Подключиться" BackgroundColor="{StaticResource GreenButton}" Command="{Binding ConetDiviceCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>-->
-                    <Button Text="Подключиться123" BackgroundColor="{StaticResource GreenButton}" Command="{Binding GenerateBarcodeCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>
+                    <Button Text="Подключиться" BackgroundColor="{StaticResource GreenButton}" Command="{Binding ConetDiviceCommand}" VerticalOptions="EndAndExpand" FontSize="Subtitle"/>
 
                 </StackLayout>
 
             </Grid>
         </Border>
         <!-- Подключение оборудования -->
-
     </Grid>
 
 </ContentPage>

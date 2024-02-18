@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,11 +60,11 @@ namespace CargoTrans.ViewModels
         [RelayCommand]
         public void ConetDivice()
         {
-            if(IsNotNull(_USserialPort) && _USserialPort.IsOpen)
+            if (IsNotNull(_USserialPort) && _USserialPort.IsOpen)
                 _USserialPort.Close();
-            
 
-            if (ScannerPortName!=-5) // Если кто то это увидет простите сейчас важна скорость дедлаин сгорел вчера
+
+            if (ScannerPortName != -5) // Если кто то это увидет простите сейчас важна скорость дедлаин сгорел вчера
             {
 
                 _USserialPort = new SerialPort(Portsnames[ScannerPortName], 9600); // Укажите нужный COM порт и скорость передачи данных
@@ -73,13 +74,13 @@ namespace CargoTrans.ViewModels
             }
             else
             {
-                AppShell.Current.DisplayAlert("Внимание","Не был выбран порт сканера","ok");
+                AppShell.Current.DisplayAlert("Внимание", "Не был выбран порт сканера", "ok");
             }
             if (IsNotNull(_MassserialPort) && _MassserialPort.IsOpen)
                 _USserialPort.Close();
-            
-            if (IsNotNull( ScalesPortName))
-            {    
+
+            if (IsNotNull(ScalesPortName))
+            {
                 // Подключаемся к COM порту
                 _MassserialPort = new SerialPort(Portsnames[ScalesPortName], 4800);
 
@@ -92,19 +93,19 @@ namespace CargoTrans.ViewModels
                 _MassserialPort.DataReceived += SerialPort_DataReceived;
 
                 // Открываем порт
-                try {  _MassserialPort.Open(); }
+                try { _MassserialPort.Open(); }
                 catch (Exception ex) { return; }
             }
             else
             {
-                AppShell.Current.DisplayAlert("Внимание","Не был выбран порт весов","ok");
+                AppShell.Current.DisplayAlert("Внимание", "Не был выбран порт весов", "ok");
             }
 
 
 
         }
 
-        private  void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
+        private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
             SerialPort sp = (SerialPort)sender;
             string data = sp.ReadExisting();
@@ -123,8 +124,8 @@ namespace CargoTrans.ViewModels
                     Length = Convert.ToInt32(lastFourLines[1].Substring(0, lastFourLines[1].Length - 3));
                     Height = Convert.ToInt32(lastFourLines[2].Substring(0, lastFourLines[2].Length - 3));
                 }
-                catch(Exception ex) { Console.WriteLine(ex.Message); }
-                    
+                catch (Exception ex) { Console.WriteLine(ex.Message); }
+
             }
             else
             {
@@ -150,9 +151,51 @@ namespace CargoTrans.ViewModels
                 }
 
                 //Console.WriteLine($"Получен вес: {wght} г");
-                 Weight = wght;
+                Weight = wght;
             }
             else { AppShell.Current.DisplayAlert("Error", "Ошибка: Неверный формат данных.", "ok"); }
+        }
+
+
+        public void Print_Barcode(string plain_text)
+        {
+            try
+            {
+                //var plain_text = "text";
+                var ip = "192.168.31.98";
+                if (string.IsNullOrWhiteSpace(ip))
+                {
+                    throw new Exception("No Ip address");
+                }
+
+                // Connect to the printer using TCP socket
+                using (var client = new TcpClient(ip, 9100))
+                {   // Assuming the printer uses port 9100
+                    using (var stream = client.GetStream())
+                    {
+                        byte[] data = Encoding.UTF8.GetBytes(plain_text);
+                        stream.Write(data, 0, data.Length);
+
+                        // stream.Write(postData);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                //DialogService.ShowToast(ex.Message);
+
+                // Handle connection or printing error
+                //  Console.WriteLine($"Error printing directly to printer: {ex.Message}");
+            }
+
+        }
+
+        public static void PrintText(string plain_text)
+        {
+        }
+        public void Generate_barcode(string _code)
+        {
+
         }
     }
 }

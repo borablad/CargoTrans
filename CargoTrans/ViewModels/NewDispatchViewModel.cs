@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.Input;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Drawing;
 using System.IO.Ports;
 using System.Net;
@@ -31,6 +32,13 @@ namespace CargoTrans.ViewModels
         private string description;
         [ObservableProperty]
         private string cargoCode;
+        [ObservableProperty]
+        private string recepfirst_name,
+                        receplast_name,
+                        recepmiddle_name,
+                        recepaddress,
+                        recepphone,
+                        recepemail;
 
         [ObservableProperty]
         private List<string> pointsList = new List<string>();
@@ -40,19 +48,8 @@ namespace CargoTrans.ViewModels
 
         public string AddressTextField
         {
-            LoadData();
-            //PointsList.Add("Алматы");
-            //PointsList.Add("Астана");
-            //PointsList.Add("Шымкент");
-            //PointsList.Add("Караганда");
-            //PointsList.Add("Актобе");
-            //PointsList.Add("Тараз");
-            //PointsList.Add("Павлодар");
-            //PointsList.Add("Усть-Каменогорск");
-            //PointsList.Add("Семей");
-            //PointsList.Add("Атырау");
-            //PointsList.Add("Костанай");
-            //PointsList.Add("Кызылорда");
+            LoadData ();
+
         }
 
         [RelayCommand]
@@ -69,7 +66,7 @@ namespace CargoTrans.ViewModels
         public async void LoadData()
         {
             PointsList = await FetchPointDataFromApi();
-            Portsnames = SerialPort.GetPortNames();
+            //Portsnames = SerialPort.GetPortNames();
             GetCargoCode();
         }
 
@@ -121,28 +118,13 @@ namespace CargoTrans.ViewModels
 
 
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string json = await response.Content.ReadAsStringAsync();
-                        dynamic data = JsonConvert.DeserializeObject(json);
-
-                        foreach (var item in data.result)
-                        {
-                            string title = item.title;
-                            resultList.Add(title);
-                        }
-                    }
-                    else
-                    {
-                        await AppShell.Current.DisplayAlert("", "Failed to fetch data from the API. Status code: " + response.StatusCode, "ok");
-                    }
-                }
-            }
-            catch (Exception ex)
+        private Bitmap GenerateBarcodeImage(string barcodeData)
+        {
+            BarcodeWriter<Bitmap> writer = new BarcodeWriter<Bitmap>
             {
-                await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
-            }
-            return resultList;
+                Format = BarcodeFormat.CODE_128
+            };
+            return writer.Write(barcodeData);
         }
 
 
@@ -250,8 +232,150 @@ namespace CargoTrans.ViewModels
             }
         }
 
+        public async void GetCargoCode()
+        {
+                try
+                {
+                    string accessToken = await SecureStorage.GetAsync("AccessToken");
+                    string refreshToken = await SecureStorage.GetAsync("RefreshToken");
 
+                    string apiUrl = "https://ktzh.shit-systems.dev/api/keeper/application/setup";
 
+                    using (HttpClient client = new HttpClient())
+                    {
+                        Uri uri = new Uri(apiUrl);
+
+                        // Устанавливаем токены в заголовки запроса
+                        client.DefaultRequestHeaders.Clear();
+                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                        client.DefaultRequestHeaders.Add("RefreshToken", refreshToken);
+
+                        var response = await client.GetAsync(uri);
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            string json = await response.Content.ReadAsStringAsync();
+                            dynamic data = JObject.Parse(json);
+
+                            // Получаем значение "result" и сохраняем его в переменную
+                            CargoCode = data.result;
+
+                            // Используем переменную cargoCode по вашему усмотрению
+
+                        }
+                        else
+                        {
+                            await AppShell.Current.DisplayAlert("", "Failed to fetch data from the API. Status code: " + response.StatusCode, "ok");
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
+                }
+        }
+
+        [RelayCommand]
+        public async void Send()
+        {
+            //if(Width==0 || Weight==0)
+            //{
+            //    AppShell.Current.DisplayAlert("","Не получены о весе или размере","ok");
+            //    return;
+            //}
+            if (!IsNotNull(CargoCode))
+            {
+                AppShell.Current.DisplayAlert("", "Не введён код отправки", "ok");
+                return;
+            }
+
+            var _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri("https://ktzh.shit-systems.dev/api/");
+            try
+            {
+                string accessToken = await SecureStorage.GetAsync("AccessToken");
+                string refreshToken = await SecureStorage.GetAsync("RefreshToken");
+                var requestData = new
+                {
+                    user = new
+                    {
+                        login = EmailTextField,
+                        phone = PhoneNumberTextField,
+                        password = "AzSxDc123!!",
+
+                    },
+                    info = new
+                    {
+                        first_name = FioTextField,
+                        last_name = FioTextField,
+                        address = AddressTextField,
+                        //notes = ,
+
+                    },
+                    code = CargoCode,
+                    point_to_id = "ed4e169e-1e23-41cf-88fe-07492f0bae93",
+                    point_from_id = "0c0bfc52-3a1f-428c-99a0-7001ed34503b",
+                    recipient = new
+                    {
+                        first_name = Recepfirst_name,
+                        last_name = Receplast_name,
+                        middle_name = Recepmiddle_name,
+                        address = Recepaddress,
+                        phone = Recepphone,
+                        email = Recepemail
+                    },
+                    dimensions = new
+                    {
+                        height = Height,
+                        wigth = Width,
+                        depth = Length,
+                        mass = Weight
+                    },
+                    ticket = new
+                    {
+                        ticket_number = TicketNumberTextField
+                    }
+                };
+
+                var json = Newtonsoft.Json.JsonConvert.SerializeObject(requestData);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                _httpClient.DefaultRequestHeaders.Clear();
+                _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
+                _httpClient.DefaultRequestHeaders.Add("RefreshToken", refreshToken);
+                // Аутентификация
+                var response = await _httpClient.PostAsync($"keeper/application/", data);
+                //var responseData = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    var responseData = await response.Content.ReadAsStringAsync();
+                    //var _authResponse = JsonConvert.DeserializeObject<AuthResponse>(responseData);
+                    DataModel item_data = JsonConvert.DeserializeObject<DataModel>(responseData);
+
+                    // Использование значений barcode и mark
+                    string barcodeValue = item_data.Barcode;
+                    string markValue = item_data.Mark;
+                    //Print_Barcode();
+
+                    // Обработка полученных данных, если необходимо
+                    return;
+
+                }
+                else
+                {
+                    await AppShell.Current.DisplayAlert("", "Failed to send data with the API. Status code: " + response.StatusCode, "OK");
+                    return;
+                }
+            }
+            catch (Exception ex)
+            {
+                await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "OK");
+                return;
+            }
+
+        }
 
     }
 }

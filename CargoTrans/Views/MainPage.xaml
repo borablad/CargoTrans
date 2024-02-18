@@ -95,11 +95,11 @@
                         <Label Text="{Binding Length,StringFormat='Занимаемая кубатура: {0:N} см в кубе'}"  FontSize="Subtitle"  />
                         <Label Text="Код отправки нанесённый на богаж"  FontSize="Body" Margin="5,5,0,0" />
                         <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250">
-                            <Entry Text="" Placeholder="Введите код отправки нанесённый на богаж" Keyboard="Numeric">
+                            <Entry Text="{Binding CargoCode}" Placeholder="Введите код отправки нанесённый на богаж" Keyboard="Numeric">
                                 
                             </Entry>
                         </Border>
-                        <Button Text="Отправить" BackgroundColor="{StaticResource GreenButton}" FontSize="Subtitle"/>
+                        <Button Text="Отправить" BackgroundColor="{StaticResource GreenButton}" Command="{Binding SendCommand}" FontSize="Subtitle"/>
                     </StackLayout>
                     
                 </Grid>
