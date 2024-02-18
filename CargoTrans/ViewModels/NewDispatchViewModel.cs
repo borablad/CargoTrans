@@ -46,7 +46,7 @@ namespace CargoTrans.ViewModels
         [ObservableProperty]
         private int departurePointId, destinationPointId;
 
-        public string AddressTextField
+        public NewDispatchViewModel()
         {
             LoadData ();
 
@@ -70,37 +70,6 @@ namespace CargoTrans.ViewModels
             GetCargoCode();
         }
 
-        private void GenerateBarCode()
-        {
-            try
-
-
-                 
-            {
-                BarcodeWriter<Bitmap> writer = new BarcodeWriter<Bitmap>
-                {
-                    Format = BarcodeFormat.CODE_128
-                };
-
-                if (writer != null)
-                {
-                    return writer.Write(barcodeData);
-                }
-                else
-                {
-                    Console.WriteLine("Ошибка при генерации штрих-кода: объект writer не был инициализирован");
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Ошибка при генерации штрих-кода: {ex.Message}");
-                throw;
-            }
-        }
-
-
-
         public ICommand GetTextCommand { get; }
 
         private void GetText()
@@ -116,6 +85,42 @@ namespace CargoTrans.ViewModels
             }
         }
 
+        public async Task<List<string>> FetchPointDataFromApi()
+        {
+            string apiUrl = "https://ktzh.shit-systems.dev/api/point/?page=0&size=0";
+            List<string> resultList = new List<string>();
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    Uri uri = new Uri(apiUrl);
+                    //HttpResponseMessage response = await client.GetAsync(uri);
+                    var response = await client.GetAsync(uri);
+                    //var h = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string json = await response.Content.ReadAsStringAsync();
+                        dynamic data = JsonConvert.DeserializeObject(json);
+
+                        foreach (var item in data.result)
+                        {
+                            string title = item.title;
+                            resultList.Add(title);
+                        }
+                    }
+                    else
+                    {
+                        await AppShell.Current.DisplayAlert("", "Failed to fetch data from the API. Status code: " + response.StatusCode, "ok");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
+            }
+            return resultList;
+        }
 
 
         private Bitmap GenerateBarcodeImage(string barcodeData)
@@ -167,116 +172,8 @@ namespace CargoTrans.ViewModels
 
         }
 
-        public async void SendCargoInfo()
-        {
-            try
-            {
-                var Request = new
-                {
-                    user = new 
-                    { 
-                        login = EmailTextField,
-                        phone = PhoneNumberTextField,
-                        password = "AzSxDc123!!",
- 
-                    },
-                    info = new
-                    {
-
-                        first_name = FioTextField,
-                        last_name = FioTextField,
-
-                    },
-                    code = CargoCode,
-                    point_to_id = "c92df023-8450-43cc-8215-030cbb439dbc",
-                    point_from_id = "2c200c48-0096-497a-9eeb-dc76b6793bd9"
-                };
-                var json = Newtonsoft.Json.JsonConvert.SerializeObject(Request);
-
-
-                string accessToken = await SecureStorage.GetAsync("AccessToken");
-                string refreshToken = await SecureStorage.GetAsync("RefreshToken");
-
-                string apiUrl = "https://ktzh.shit-systems.dev/api/keeper/application/";
-
-                using (HttpClient _httpClient = new HttpClient())
-                {
-                    Uri uri = new Uri(apiUrl);
-
-                    // Устанавливаем токены в заголовки запроса
-                    _httpClient.DefaultRequestHeaders.Clear();
-                    _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-                    _httpClient.DefaultRequestHeaders.Add("RefreshToken", refreshToken);
-                    var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    _httpClient.DefaultRequestHeaders.Clear();
-                    _httpClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-
-                    var response = await _httpClient.PostAsync(uri, content);
-                    var r = response.Content.ReadAsStringAsync();
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string responseJson = await response.Content.ReadAsStringAsync();
-                        return;//  responseJson;
-                    }
-                    else
-                    {
-                        return;//  $"Failed to send application. Status code: {response.StatusCode}";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return;// $"An error occurred: {ex.Message}";
-            }
-        }
-
-        public async void GetCargoCode()
-        {
-                try
-                {
-                    string accessToken = await SecureStorage.GetAsync("AccessToken");
-                    string refreshToken = await SecureStorage.GetAsync("RefreshToken");
-
-                    string apiUrl = "https://ktzh.shit-systems.dev/api/keeper/application/setup";
-
-                    using (HttpClient client = new HttpClient())
-                    {
-                        Uri uri = new Uri(apiUrl);
-
-                        // Устанавливаем токены в заголовки запроса
-                        client.DefaultRequestHeaders.Clear();
-                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {accessToken}");
-                        client.DefaultRequestHeaders.Add("RefreshToken", refreshToken);
-
-                        var response = await client.GetAsync(uri);
-
-                        if (response.IsSuccessStatusCode)
-                        {
-                            string json = await response.Content.ReadAsStringAsync();
-                            dynamic data = JObject.Parse(json);
-
-                            // Получаем значение "result" и сохраняем его в переменную
-                            CargoCode = data.result;
-
-                            // Используем переменную cargoCode по вашему усмотрению
-
-                        }
-                        else
-                        {
-                            await AppShell.Current.DisplayAlert("", "Failed to fetch data from the API. Status code: " + response.StatusCode, "ok");
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "ok");
-                }
-        }
-
         [RelayCommand]
-        public async void Send()
+        public async void SendCargoInfo()
         {
             //if(Width==0 || Weight==0)
             //{
@@ -285,7 +182,7 @@ namespace CargoTrans.ViewModels
             //}
             if (!IsNotNull(CargoCode))
             {
-                AppShell.Current.DisplayAlert("", "Не введён код отправки", "ok");
+                AppShell.Current.DisplayAlert("", "Не получен код отправки", "ok");
                 return;
             }
 
