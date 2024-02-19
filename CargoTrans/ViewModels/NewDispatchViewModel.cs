@@ -262,20 +262,20 @@ namespace CargoTrans.ViewModels
                     AppShell.Current.DisplayAlert("Отправка отправлена на кассу", $"Отнесите посылку на склад: {GetStockName(entity_id)} \r\n Barcode: {barcodeValue}", "готово");
 
                     // Обработка полученных данных, если необходимо
-                    return;
-
+                    
                 }
                 else
                 {
                     await AppShell.Current.DisplayAlert("", "Failed to send data with the API. Status code: " + response.StatusCode, "OK");
-                    return;
+                 
                 }
             }
             catch (Exception ex)
             {
                 await AppShell.Current.DisplayAlert("", "An error occurred: " + ex.Message, "OK");
-                return;
+               
             }
+            GetCargoCode();
 
         }
 

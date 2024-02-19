@@ -13,7 +13,7 @@
         <!-- Кастомный нав бар -->
         <Border  Grid.ColumnSpan="2" StrokeShape="RoundRectangle 0" BackgroundColor="{AppThemeBinding Dark={StaticResource HeaderBarBackgroundColorDark},Light={StaticResource HeaderBarBackgroundColorLight}}" >
             <Grid>
-                <Image Source="cargo_icon.png" HorizontalOptions="Start" VerticalOptions="Start" />
+                <Image Source="cargo_icon.png" HorizontalOptions="Start" Margin="10" VerticalOptions="Start" />
 
                 <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="End" Spacing="20">
                     <Border StrokeShape="RoundRectangle 0"  >
@@ -51,25 +51,25 @@
                     <Border>
                         <StackLayout Padding="10">
                             <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
-                                <Label Text="Личные данные клиента" TextColor="{StaticResource Primary}" />
+                                <Label Text="Личные данные отпровителя" TextColor="{StaticResource Primary}" />
                             </Border>
-                            <Label Text="ФИО клиента"  FontSize="Body" Margin="5,5,0,0" />
+                            <Label Text="ФИО отпровителя"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding FioTextField}" Placeholder="Введите ФИО клиента" />
+                                <Entry Text="{Binding FioTextField}" Placeholder="Введите ФИО отпровителя" />
                             </Border>
 
                             <Label Text="Адрес"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding AddressTextField}" Placeholder="Введите адрес клиента" />
+                                <Entry Text="{Binding AddressTextField}" Placeholder="Введите адрес отпровителя" />
                             </Border>
 
                             <Label Text="Номер телефона"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding PhoneNumberTextField}" Placeholder="Введите номер телефона клиента" Keyboard="Numeric" />
+                                <Entry Text="{Binding PhoneNumberTextField}" Placeholder="Введите номер телефона отпровителя" Keyboard="Numeric" />
                             </Border>
                             <Label Text="и/или email"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding EmailTextField}" Placeholder="Введите email клиента" />
+                                <Entry Text="{Binding EmailTextField}" Placeholder="Введите email отпровителя" />
                             </Border>
                         </StackLayout>
                     </Border>
@@ -77,28 +77,26 @@
                     <Border>
                         <StackLayout Padding="10">
                             <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
-                                <Label Text="Билет" TextColor="{StaticResource Primary}" />
+                                <Label Text="Личные данные получателя" TextColor="{StaticResource Primary}" />
                             </Border>
-                            <Label Text="Номер билета при его наличии"  FontSize="Body" Margin="5,5,0,0" />
+                            <Label Text="ФИО получателя"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding TicketNumberTextField}" Placeholder="Введите номер билета клиента" />
+                                <Entry Text="{Binding Recepfirst_name}" Placeholder="Введите ФИО получателя" />
                             </Border>
 
-
-                        </StackLayout>
-                    </Border>
-
-                    <Border>
-                        <StackLayout Padding="10">
-                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
-                                <Label Text="Описание" TextColor="{StaticResource Primary}" />
-                            </Border>
-                            <Label Text="Добавте описание багажа"  FontSize="Body" Margin="5,5,0,0" />
+                            <Label Text="Адрес"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding Description}" Placeholder="Введите описание багажа клиента" />
+                                <Entry Text="{Binding Recepaddress}" Placeholder="Введите адрес получателя" />
                             </Border>
 
-
+                            <Label Text="Номер телефона"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="{Binding Recepphone}" Placeholder="Введите номер телефона получателя" Keyboard="Numeric" />
+                            </Border>
+                            <Label Text="и/или email"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="{Binding Recepemail}" Placeholder="Введите email получателя" />
+                            </Border>
                         </StackLayout>
                     </Border>
 
@@ -149,6 +147,34 @@
                                     
                                 </Picker>
                             </Border>
+                        </StackLayout>
+                    </Border>
+
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Билет" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="Номер билета при его наличии"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="{Binding TicketNumberTextField}" Placeholder="Введите номер билета Получателя" />
+                            </Border>
+
+
+                        </StackLayout>
+                    </Border>
+
+                    <Border>
+                        <StackLayout Padding="10">
+                            <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
+                                <Label Text="Описание" TextColor="{StaticResource Primary}" />
+                            </Border>
+                            <Label Text="Добавте описание багажа"  FontSize="Body" Margin="5,5,0,0" />
+                            <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
+                                <Entry Text="{Binding Description}" Placeholder="Введите описание багажа Получателя" />
+                            </Border>
+
+
                         </StackLayout>
                     </Border>
 
