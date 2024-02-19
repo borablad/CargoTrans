@@ -24,6 +24,9 @@ namespace CargoTrans.ViewModels
         private int width;
         [ObservableProperty]
         private int length;
+        [ObservableProperty]
+        private double coubheight;
+
 
         public SerialPort _USserialPort, _MassserialPort;
 
@@ -61,11 +64,11 @@ namespace CargoTrans.ViewModels
         [RelayCommand]
         public void ConetDivice()
         {
-            if (IsNotNull(_USserialPort) && _USserialPort.IsOpen)
-                _USserialPort.Close();
+            if (IsNotNull(_USserialPort))
+                if (_USserialPort.IsOpen)
+                    _USserialPort.Close();
 
-
-            if (ScannerPortName != -5) // Если кто то это увидет простите сейчас важна скорость дедлаин сгорел вчера
+            if (ScannerPortName >=0) // Если кто то это увидет простите сейчас важна скорость дедлаин сгорел вчера
             {
 
                 _USserialPort = new SerialPort(Portsnames[ScannerPortName], 9600); // Укажите нужный COM порт и скорость передачи данных
@@ -77,10 +80,13 @@ namespace CargoTrans.ViewModels
             {
                 AppShell.Current.DisplayAlert("Внимание", "Не был выбран порт сканера", "ok");
             }
-            if (IsNotNull(_MassserialPort) && _MassserialPort.IsOpen)
-                _USserialPort.Close();
 
-            if (IsNotNull(ScalesPortName))
+            if (IsNotNull(_MassserialPort))
+                if (_MassserialPort.IsOpen)
+                    _USserialPort.Close();
+
+
+            if (ScalesPortName>=0)
             {
                 // Подключаемся к COM порту
                 _MassserialPort = new SerialPort(Portsnames[ScalesPortName], 4800);
@@ -124,6 +130,13 @@ namespace CargoTrans.ViewModels
                     Width = Convert.ToInt32(lastFourLines[0].Substring(0, lastFourLines[0].Length - 3));
                     Length = Convert.ToInt32(lastFourLines[1].Substring(0, lastFourLines[1].Length - 3));
                     Height = Convert.ToInt32(lastFourLines[2].Substring(0, lastFourLines[2].Length - 3));
+                    if (Width < 4 || Length < 4 || Height < 4)
+                    {
+                        Width = 0;
+                        Length = 0;
+                        Height = 0;
+                    }
+                    Coubheight = (Width*Length*Height);
                 }
                 catch (Exception ex) { Console.WriteLine(ex.Message); }
 
