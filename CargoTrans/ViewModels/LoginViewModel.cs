@@ -17,7 +17,6 @@ namespace CargoTrans.ViewModels
         public LoginViewModel() 
         {
             //Login();
-
         }
 
         [RelayCommand]

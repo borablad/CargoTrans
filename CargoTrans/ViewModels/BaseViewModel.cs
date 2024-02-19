@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using ZXing.QrCode.Internal;
 
 namespace CargoTrans.ViewModels
 {
@@ -34,7 +35,7 @@ namespace CargoTrans.ViewModels
         private string[] portsnames;
 
         [ObservableProperty]
-        private int scalesPortName = -5, scannerPortName = -5, printPortName, wifiPrintIpAddres = -5;
+        private int scalesPortName = -5, scannerPortName = -5, printPortName;
 
         [ObservableProperty]
         protected bool isBusy;
@@ -42,7 +43,7 @@ namespace CargoTrans.ViewModels
         public MockDataStore mockDataStore = new MockDataStore();
 
         [ObservableProperty]
-        private string title;
+        private string title, wifiPrintIpAddres;
 
         protected Action currentDismissAction;
 
@@ -89,19 +90,22 @@ namespace CargoTrans.ViewModels
             if (ScalesPortName>=0)
             {
                 // Подключаемся к COM порту
-                _MassserialPort = new SerialPort(Portsnames[ScalesPortName], 4800);
-
-                // Устанавливаем параметры порта
-                _MassserialPort.DataBits = 8;
-                _MassserialPort.Parity = Parity.Space;
-                _MassserialPort.StopBits = StopBits.One;
+                _MassserialPort = new SerialPort(Portsnames[ScalesPortName], 4800, Parity.Even, 8, StopBits.One);
 
                 // Обработчик события при появлении новых данных в порте
-                _MassserialPort.DataReceived += SerialPort_DataReceived;
+                _MassserialPort.DataReceived += new SerialDataReceivedEventHandler(SerialPort_DataReceived);
 
                 // Открываем порт
-                try { _MassserialPort.Open(); }
-                catch (Exception ex) { return; }
+                try 
+                {
+                    _MassserialPort.Open();
+                    SendCommand(0x45);
+                }
+                catch (Exception ex) 
+                {
+                    AppShell.Current.DisplayAlert("Внимание", "Не получилось подключится к весам", "ok");
+                    return; 
+                }
             }
             else
             {
@@ -110,6 +114,18 @@ namespace CargoTrans.ViewModels
 
 
 
+        }
+
+        private void SendCommand(byte command)
+        {
+            try
+            {
+                _MassserialPort.Write(new byte[] { command }, 0, 1);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
@@ -130,11 +146,10 @@ namespace CargoTrans.ViewModels
                     Width = Convert.ToInt32(lastFourLines[0].Substring(0, lastFourLines[0].Length - 3));
                     Length = Convert.ToInt32(lastFourLines[1].Substring(0, lastFourLines[1].Length - 3));
                     Height = Convert.ToInt32(lastFourLines[2].Substring(0, lastFourLines[2].Length - 3));
-                    if (Width < 4 || Length < 4 || Height < 4)
+                    if (Width > 2 || Length >2 || Height>2)
                     {
-                        Width = 0;
-                        Length = 0;
-                        Height = 0;
+                        SendCommand(0x45);
+
                     }
                     Coubheight = (Width*Length*Height);
                 }
@@ -148,26 +163,32 @@ namespace CargoTrans.ViewModels
         }
         public void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            SerialPort serialPort = (SerialPort)sender;
 
-            // Читаем 5 байт из порта
-            byte[] buffer = new byte[5];
-            serialPort.Read(buffer, 0, buffer.Length);
+            SerialPort sp = (SerialPort)sender;
+            int bytesToRead = sp.BytesToRead;
+            byte[] data = new byte[bytesToRead];
+            sp.Read(data, 0, bytesToRead);
 
-            // Декодируем данные и конвертируем их в массу
-            if (buffer[0] == 0x55 && buffer[1] == 0xAA)
+            // Обработка полученных данных для запроса массы
+            if (data.Length >= 2)
             {
-                int wght = buffer[3] * 256 + buffer[2]; // 4-й байт - старший
-                bool isPositive = (buffer[4] & 0x80) == 0;
-                if (!isPositive)
-                {
-                    wght = -wght;
-                }
+                // Извлечение знака массы
+                bool isNegative = (data[data.Length- 1] & 0x80) != 0;
 
-                //Console.WriteLine($"Получен вес: {wght} г");
-                Weight = wght;
+                // Извлечение значения массы
+
+                int weightValue = ((data[data.Length - 1] & 0x7F) << 8) | (data[data.Length - 2] & 0x7F); // 
+                Weight = weightValue;
+                // Вывод результата
+                //if (isNegative)
+                //{
+                //    Console.WriteLine("Масса: -{0} грамм", weightValue);
+                //}
+                //else
+                //{
+                //    Console.WriteLine("Масса: {0} грамм", weightValue);
+                //}
             }
-            else { AppShell.Current.DisplayAlert("Error", "Ошибка: Неверный формат данных.", "ok"); }
         }
 
         [RelayCommand]
@@ -179,7 +200,7 @@ namespace CargoTrans.ViewModels
         public async Task<string> GetStockName(string stockId)
         {
             string result = "";
-            string apiUrl = $"https://ktzh.shit-systems.dev/api/stock/{stockId}";
+            string apiUrl = $"https://ktzh.shit-systems.dev/api/stock/stock/{stockId}";
             try
             {
                 using (HttpClient client = new HttpClient())
@@ -193,7 +214,7 @@ namespace CargoTrans.ViewModels
                     {
                         string json = await response.Content.ReadAsStringAsync();
                         dynamic data = JsonConvert.DeserializeObject(json);
-                        //result = data.;
+                        result = data.title;
                         
                     }
                     else
@@ -209,31 +230,32 @@ namespace CargoTrans.ViewModels
             return result;
         }
 
-
         public void Print_Barcode(string plain_text)
         {
             try
             {
+                if (!IsNotNull(WifiPrintIpAddres))
+                {
+                    AppShell.Current.DisplayAlert("","Не введён ip адрес принтера печать невозможна","ok") ;
+                }
                 //var plain_text = "text";
-                var ip = "192.168.31.98";
+                var ip = WifiPrintIpAddres;
+                //var ip = "192.168.31.98";
                 if (string.IsNullOrWhiteSpace(ip))
                 {
                     throw new Exception("No Ip address");
                 }
 
                 // Connect to the printer using TCP socket
-                using (var client = new TcpClient(ip, 9100))
-                {   // Assuming the printer uses port 9100
-                    using (var stream = client.GetStream())
-                    {
-                        byte[] data = Encoding.UTF8.GetBytes(plain_text);
-                          byte[] postData = System.Text.Encoding.GetEncoding(866).GetBytes(plain_text);
+                using (var client = new TcpClient(ip, 9100))  // Assuming the printer uses port 9100
+                using (var stream = client.GetStream())
+                {
 
-                        stream.Write(postData);
-                        //stream.Write(data, 0, data.Length);
 
-                        // stream.Write(postData);
-                    }
+                    var s = Encoding.Default;
+                    byte[] postData = Encoding.Default.GetBytes(plain_text);
+
+                    stream.Write(postData);
                 }
             }
               catch (Exception ex)
@@ -249,10 +271,22 @@ namespace CargoTrans.ViewModels
         public static void PrintText(string plain_text)
         {
         }
-        public string Generate_barcode(string _code)
+        public string Generate_barcode(string barcode, string msg)
         {
-            return "";
-
+            char ESC = (char)27; char GS = (char)29;
+            string getBarcodeStr;
+            getBarcodeStr = ESC + "a" + (char)1; //align center
+            getBarcodeStr = getBarcodeStr + GS + "h" + (char)80; //Bardcode Hieght           
+            getBarcodeStr = getBarcodeStr + GS + "w" + (char)3; //Barcode Width 1 to 4
+            getBarcodeStr = getBarcodeStr + GS + "f" + (char)0; //Font for HRI characters
+            getBarcodeStr = getBarcodeStr + GS + "H" + (char)2; //Position of HRI characters
+            getBarcodeStr = getBarcodeStr + GS + "k" + (char)69 + (char)barcode.Length; //'Print Barcode Smb 39            
+            getBarcodeStr = getBarcodeStr + barcode + (char)0; //'Print Text Under            
+            getBarcodeStr = getBarcodeStr + GS + "d" + (char)3;
+            getBarcodeStr = getBarcodeStr + msg + "\r\n";
+            getBarcodeStr = getBarcodeStr + GS + "@";
+            getBarcodeStr = getBarcodeStr + ESC + "a" + (char)0; //align left
+            return getBarcodeStr;
         }
 
     }

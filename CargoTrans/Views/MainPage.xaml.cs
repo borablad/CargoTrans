@@ -19,7 +19,7 @@ namespace CargoTrans.Views
                     vm._USserialPort.Close();
             if (vm.IsNotNull(vm._MassserialPort))
                 if (vm._MassserialPort.IsOpen)
-                    vm._USserialPort.Close();
+                    vm._MassserialPort.Close();
         }
 
 

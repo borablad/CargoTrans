@@ -144,7 +144,7 @@
 
                     <Label Text="Wi-fi принтер"  FontSize="Body" Margin="5,5,0,0" />
                     <Border Padding="0" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}" HorizontalOptions="Fill" MaximumHeightRequest="250">
-                        <Entry Text="" Placeholder="Введите ip адрес" Keyboard="Numeric">
+                        <Entry Text="{Binding WifiPrintIpAddres}" Placeholder="Введите ip адрес" Keyboard="Numeric">
 
                         </Entry>
                     </Border>

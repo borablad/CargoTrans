@@ -78,7 +78,7 @@ namespace CargoTrans.ViewModels
                     dimensions = new
                     {
                         height = Height,
-                        wigth = Width,
+                        weigth = Width,
                         depth = Length,
                         mass = Weight
                     }//,
@@ -96,9 +96,9 @@ namespace CargoTrans.ViewModels
                 _httpClient.DefaultRequestHeaders.Add("RefreshToken", refreshToken);
                 // Аутентификация
                 var response = await _httpClient.PatchAsync($"keeper/application/{CargoCode}", data);
-                //var responseData = await response.Content.ReadAsStringAsync();
+                var responssseData = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode)
+                 if (response.IsSuccessStatusCode)
                 {
 
                     var responseData = await response.Content.ReadAsStringAsync();
@@ -109,7 +109,15 @@ namespace CargoTrans.ViewModels
                     string barcodeValue = item_data.Barcode;
                     string markValue = item_data.Mark;
                     string entity_id = item_data.Entity_id;
-                    AppShell.Current.DisplayAlert("Отправка отправлена на кассу", $"Отнесите посылку на склад: {GetStockName(entity_id)} \r\n Barcode: {barcodeValue}", "готово");
+                    AppShell.Current.DisplayAlert("Отправка отправлена на кассу", $"Отнесите посылку на склад: {await GetStockName(entity_id)} \r\n Barcode: {barcodeValue}", "готово");
+                    string GS = Convert.ToString((char)29);
+                    string ESC = Convert.ToString((char)27);
+
+                    string CUTCOMMAND = "";
+                    CUTCOMMAND = ESC + "@";
+                    CUTCOMMAND += GS + "V" + (char)48;
+                    Print_Barcode($" \r\n \r\n \r\n Height : {Height},\r\nWight : {Width},\r\nLength : {Length},\r\nWeight : {Weight},\r\nCargoCode : {CargoCode}  \r\n" + Generate_barcode(barcodeValue, barcodeValue)+ "\r\n  \r\n  \r\n \r\n  \r\n  \r\n" + CUTCOMMAND);
+
 
                     // Обработка полученных данных, если необходимо
                     return;
