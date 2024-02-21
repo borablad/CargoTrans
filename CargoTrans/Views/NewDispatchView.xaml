@@ -51,25 +51,25 @@
                     <Border>
                         <StackLayout Padding="10">
                             <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
-                                <Label Text="Личные данные отпровителя" TextColor="{StaticResource Primary}" />
+                                <Label Text="Личные данные отправителя" TextColor="{StaticResource Primary}" />
                             </Border>
-                            <Label Text="ФИО отпровителя"  FontSize="Body" Margin="5,5,0,0" />
+                            <Label Text="ФИО отправителя"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding FioTextField}" Placeholder="Введите ФИО отпровителя" />
+                                <Entry Text="{Binding FioTextField}" Placeholder="Введите ФИО отправителя" />
                             </Border>
 
                             <Label Text="Адрес"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding AddressTextField}" Placeholder="Введите адрес отпровителя" />
+                                <Entry Text="{Binding AddressTextField}" Placeholder="Введите адрес отправителя" />
                             </Border>
 
                             <Label Text="Номер телефона"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding PhoneNumberTextField}" Placeholder="Введите номер телефона отпровителя" Keyboard="Numeric" />
+                                <Entry Text="{Binding PhoneNumberTextField}" Placeholder="Введите номер телефона отправителя" Keyboard="Numeric" />
                             </Border>
                             <Label Text="и/или email"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
-                                <Entry Text="{Binding EmailTextField}" Placeholder="Введите email отпровителя" />
+                                <Entry Text="{Binding EmailTextField}" Placeholder="Введите email отправителя" />
                             </Border>
                         </StackLayout>
                     </Border>
@@ -169,7 +169,7 @@
                             <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
                                 <Label Text="Описание" TextColor="{StaticResource Primary}" />
                             </Border>
-                            <Label Text="Добавте описание багажа"  FontSize="Body" Margin="5,5,0,0" />
+                            <Label Text="Добавьте описание багажа"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
                                 <Entry Text="{Binding Description}" Placeholder="Введите описание багажа Получателя" />
                             </Border>
@@ -225,7 +225,7 @@
 
                         </Entry>
                     </Border>
-                    <Label Text="Обноружить com порты" TextColor="{StaticResource Primary}" HorizontalOptions="Center" FontSize="Body">
+                    <Label Text="Обнаружить com порты" TextColor="{StaticResource Primary}" HorizontalOptions="Center" FontSize="Body">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GetPortsCommand}"/>
                         </Label.GestureRecognizers>

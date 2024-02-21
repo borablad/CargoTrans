@@ -93,9 +93,9 @@
                     </Grid>
                     <StackLayout Grid.Column="1" Spacing="10" >
                         <Label Text="{Binding Coubheight,StringFormat='Занимаемая кубатура: {0:N0} см в кубе'}"  FontSize="Subtitle"  />
-                        <Label Text="Код отправки нанесённый на богаж"  FontSize="Body" Margin="5,5,0,0" />
+                        <Label Text="Код отправки нанесённый на багаж"  FontSize="Body" Margin="5,5,0,0" />
                         <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250">
-                            <Entry Text="{Binding CargoCode}" Placeholder="Введите код отправки нанесённый на богаж" Keyboard="Numeric">
+                            <Entry Text="{Binding CargoCode}" Placeholder="Введите код отправки нанесённый на багаж" Keyboard="Numeric">
                                 
                             </Entry>
                         </Border>
@@ -148,7 +148,7 @@
 
                         </Entry>
                     </Border>
-                    <Label Text="Обноружить com порты" TextColor="{StaticResource Primary}" HorizontalOptions="Center" FontSize="Body">
+                    <Label Text="Обнаружить com порты" TextColor="{StaticResource Primary}" HorizontalOptions="Center" FontSize="Body">
                         <Label.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding GetPortsCommand}"/>
                         </Label.GestureRecognizers>

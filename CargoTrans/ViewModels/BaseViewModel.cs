@@ -143,9 +143,9 @@ namespace CargoTrans.ViewModels
 
                 try
                 {
-                    Width = Convert.ToInt32(lastFourLines[0].Substring(0, lastFourLines[0].Length - 3));
+                    Height = Convert.ToInt32(lastFourLines[0].Substring(0, lastFourLines[0].Length - 3));
                     Length = Convert.ToInt32(lastFourLines[1].Substring(0, lastFourLines[1].Length - 3));
-                    Height = Convert.ToInt32(lastFourLines[2].Substring(0, lastFourLines[2].Length - 3));
+                    Width = Convert.ToInt32(lastFourLines[2].Substring(0, lastFourLines[2].Length - 3));
                     if (Width > 2 || Length >2 || Height>2)
                     {
                         SendCommand(0x45);
@@ -178,7 +178,7 @@ namespace CargoTrans.ViewModels
                 // Извлечение значения массы
 
                 int weightValue = ((data[data.Length - 1] & 0x7F) << 8) | (data[data.Length - 2] & 0x7F); // 
-                Weight = weightValue;
+                Weight = weightValue - 4440;
                 // Вывод результата
                 //if (isNegative)
                 //{
