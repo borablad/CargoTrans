@@ -17,6 +17,8 @@ namespace CargoTrans.ViewModels
         public LoginViewModel() 
         {
             //Login();
+            UserLogin = Preferences.Get("login","");
+            UserPassword = Preferences.Get("password","");
         }
 
         [RelayCommand]
@@ -47,6 +49,8 @@ namespace CargoTrans.ViewModels
 
                         if (await SaveTokensAsync(_authResponse.AccessToken, _authResponse.RefreshToken))
                         {
+                            Preferences.Set("login",UserLogin);
+                            Preferences.Set("password",UserPassword);
                             await AppShell.Current.GoToAsync($"{nameof(MainPage)}");
 
                         }
