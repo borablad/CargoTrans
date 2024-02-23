@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
+using System.Diagnostics;
 using System.IO.Ports;
 using System.Text;
+using ZXing.PDF417.Internal;
 using Exception = System.Exception;
 
 
@@ -34,9 +36,19 @@ namespace CargoTrans.ViewModels
             //}
             if (!IsNotNull(CargoCode))
             {
-                AppShell.Current.DisplayAlert("", "Не введён код отправки", "ok");
+                await AppShell.Current.DisplayAlert("", "Не введён код отправки", "ok");
                 return;
             }
+
+            if(Height<2||Weight<2) 
+            {
+                await AppShell.Current.DisplayAlert("", "Некоректные данные о размере или весе", "ok");
+                return;
+            }
+
+            bool _pay = await AppShell.Current.DisplayAlert("Оплата", "Ожидание оплаты", "Отправитель оплатил отправку", "Отправитель не оплатил отправку");
+            if (!_pay)
+                return;
 
             var _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://ktzh.shit-systems.dev/api/");
@@ -118,6 +130,7 @@ namespace CargoTrans.ViewModels
                     CUTCOMMAND += GS + "V" + (char)48;
                     Print_Barcode($" \r\n \r\n \r\n Height : {Height},\r\nWight : {Width},\r\nLength : {Length},\r\nWeight : {Weight},\r\nCargoCode : {CargoCode}  \r\n" + Generate_barcode(barcodeValue, barcodeValue)+ "\r\n  \r\n  \r\n \r\n  \r\n  \r\n" + CUTCOMMAND);
 
+                    CargoCode = "";
 
                     // Обработка полученных данных, если необходимо
                     return;
@@ -125,7 +138,7 @@ namespace CargoTrans.ViewModels
                 }
                 else
                 {
-                    await AppShell.Current.DisplayAlert("", "Failed to send data with the API. Status code: " + response.StatusCode, "OK");
+                    await AppShell.Current.DisplayAlert("", "Ошибка при отправке \n\rВозможно не корректный код отправки", "OK");
                     return;
                 }
             }

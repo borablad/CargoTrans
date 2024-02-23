@@ -128,6 +128,10 @@ namespace CargoTrans.ViewModels
             {
                 await AppShell.Current.DisplayAlert("", "Не введён ip адрес принтера печать невозможна", "ok");
             }
+            else
+            {
+                Preferences.Set(nameof(WifiPrintIpAddres), WifiPrintIpAddres);
+            }
             //ConectWifiPrinter();
 
         } 
@@ -194,7 +198,9 @@ namespace CargoTrans.ViewModels
                 // Извлечение значения массы
 
                 int weightValue = ((data[data.Length - 1] & 0x7F) << 8) | (data[data.Length - 2] & 0x7F); // 
-                Weight = weightValue - 4442;
+                Weight = weightValue - 4480;
+                if (Weight < 0)
+                    Weight *= -1;
                 // Вывод результата
                 //if (isNegative)
                 //{

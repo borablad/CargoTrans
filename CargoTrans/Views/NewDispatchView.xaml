@@ -134,12 +134,12 @@
                             <Border BackgroundColor="{AppThemeBinding Dark=Black , Light=Gray}" StrokeShape="RoundRectangle 0" Margin="-10,-10,-10,0" Padding="10,5">
                                 <Label Text="Данные по напровлению" TextColor="{StaticResource Primary}" />
                             </Border>
-                            <Label Text="Станция отправления"  FontSize="Body" Margin="5,5,0,0" />
+                            <!--<Label Text="Станция отправления"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">
                                 <Picker SelectedIndex="{Binding DeparturePointId}" ItemsSource="{Binding PointsList}" >
                                     
                                 </Picker>
-                            </Border>
+                            </Border>-->
 
                             <Label Text="Станция назначения"  FontSize="Body" Margin="5,5,0,0" />
                             <Border Padding="0" HorizontalOptions="Fill" MaximumHeightRequest="250" BackgroundColor="{AppThemeBinding Dark={StaticResource BackgroundColorDark},Light={StaticResource BackgroundColorLight}}">

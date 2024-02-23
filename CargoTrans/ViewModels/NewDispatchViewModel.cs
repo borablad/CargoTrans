@@ -55,13 +55,22 @@ namespace CargoTrans.ViewModels
         }
 
         [RelayCommand]
-        public void Send()
+        public async void Send()
         {
-            if(!IsNotNull(FioTextField))
+            if(!IsNotNull(FioTextField)|| !IsNotNull(AddressTextField)|| !IsNotNull(EmailTextField)|| DeparturePointId<0||DestinationPointId<0)
             {
-                AppShell.Current.DisplayAlert("","Введите все обязательные поля","ok");
+                await AppShell.Current.DisplayAlert("", "Введите все обязательные поля", "ok");
                 return;
             }
+            if (Height < 2 || Weight < 2)
+            {
+                await AppShell.Current.DisplayAlert("", "Некоректные данные о размере или весе", "ok");
+                return;
+            }
+
+            bool _pay = await AppShell.Current.DisplayAlert("Оплата", "Ожидание оплаты", "Отправитель оплатил отправку", "Отправитель не оплатил отправку");
+            if (!_pay)
+                return;
             SendCargoInfo();
         }
 
@@ -214,8 +223,8 @@ namespace CargoTrans.ViewModels
 
                     },
                     code = CargoCode,
-                    point_to_id = PointsIdList[DeparturePointId],
-                    point_from_id = PointsIdList[DestinationPointId],
+                    point_to_id = PointsIdList[DestinationPointId],
+                    //point_from_id = PointsIdList[DeparturePointId],
                     recipient = new
                     {
                         first_name = Recepfirst_name,
@@ -248,7 +257,7 @@ namespace CargoTrans.ViewModels
                 var response = await _httpClient.PostAsync($"keeper/application/", data);
                 //var responseData = await response.Content.ReadAsStringAsync();
 
-                if (response.IsSuccessStatusCode)
+                 if (response.IsSuccessStatusCode)
                 {
 
                     var responseData = await response.Content.ReadAsStringAsync();
